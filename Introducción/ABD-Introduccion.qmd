@@ -402,7 +402,9 @@ Ejemplo: reconocer una canción en pocos segundos como Shazam
 
 ![](figuras\bigdata_valor2.png){fig-align="center" width="110%"}
 
-------------------------------------------------------------------------
+
+# Fuentes de Datos {background="#43464B" background-image="figuras/fondo1.jpg"}
+
 
 ## Big Data: Fuentes
 
@@ -444,7 +446,87 @@ Ejemplo: reconocer una canción en pocos segundos como Shazam
 ![](figuras\bigdata1.png){fig-align="center"}
 
 
+# Proceso del Big Data {background="#43464B" background-image="figuras/fondo1.jpg"}
+
+
+## 
+
+![](figuras\bigdata_proceso1.png){fig-align="center" width="110%"}
+
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_proceso2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_proceso3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+
+## 
+
+![](figuras\bigdata_proceso4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+
+## 
+
+![](figuras\bigdata_proceso5.png){fig-align="center" width="110%"}
+
+
+
 <!-- # Estrategia del Big Data {background="#43464B" background-image="figuras/fondo1.jpg"} -->
+
+<!-- ##  -->
+
+<!-- ![](figuras\bigdata_estrategia1.png){fig-align="center" width="110%"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+<!-- ##  -->
+
+<!-- ![](figuras\bigdata_estrategia2.png){fig-align="center" width="110%"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+<!-- ##  -->
+
+<!-- ![](figuras\bigdata_estrategia3.png){fig-align="center" width="110%"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+<!-- ##  -->
+
+<!-- ![](figuras\bigdata_estrategia4.png){fig-align="center" width="110%"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+<!-- ##  -->
+
+<!-- ![](figuras\bigdata_estrategia5.png){fig-align="center" width="110%"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+<!-- ##  -->
+
+<!-- ![](figuras\bigdata_estrategia6.png){fig-align="center" width="110%"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+<!-- ##  -->
+
+<!-- ![](figuras\bigdata_estrategia7.png){fig-align="center" width="110%"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+
 
 <!-- ------------------------------------------------------------------------ -->
 
