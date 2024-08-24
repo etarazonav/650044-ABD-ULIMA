@@ -1,0 +1,454 @@
+---
+title: "Conceptos Introductorios"
+subtitle: "UNIDAD 1: INTRODUCCIÓN E INFRAESTRUCTURA DE BIG DATA"
+author: 
+  name: "Enver G. Tarazona Vargas <br> etarazon@ulima.edu.pe"
+institute: "650044 - Analítica con Big Data <br> Universidad de Lima"
+format:
+  #Beamer
+  revealjs: 
+    theme: default
+    preview-links: auto
+    #theme: ["pp.scss"]
+    #theme: [simple, monash.scss]
+    css: [styles.css, custom.css]
+    slide-number: true
+    #multiplex: true
+    chalkboard: 
+      buttons: true
+    title-slide-attributes:
+      data-background-image: figuras/ULIMA_fondo_1.jpg
+      data-background-size: cover 
+      data-background-color: "black"
+    footer: <https://www.ulima.edu.pe>
+    logo: figuras/universidad_logo.png
+execute:
+  echo: true
+bibliography: bibliografia.bib
+csl: "apa.csl"
+lang: Es-es
+citation_package: biblatex
+#nocite: '@*'
+# nocite: | 
+#   @R-bookdown, @xie2015
+#editor: visual
+---
+
+```{r load_packages, message=FALSE, warning=FALSE, include=FALSE}
+library(fontawesome)
+```
+
+<!-- # Motivación {background="#43464B" background-image="figuras/fondo1.jpg"} -->
+
+## ¿Qué aprenderás? {background="#43464B"}
+
+::: {.incremental style="font-size : 100%"}
+1.  Entender qué es Big Data y la lógica subyacente
+2.  Definir cualidades claves de Big Data y su impacto en la lógica de esta.
+3.  Conocer herramientas disponibles para tener una buena infraestructura de datos.
+:::
+
+
+# Lógica del Big Data {background="#43464B" background-image="figuras/fondo1.jpg"}
+
+##
+
+{{< video https://youtu.be/w4vsFKMO7XA width="100%" height="100%" >}}
+
+
+## 
+
+![](figuras\bd_ejemplos.png){fig-align="center" width="120%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata4.png){fig-align="center" width="110%"}
+
+::: notes
+Ejemplo: comparar precios de pasajes de avión
+:::
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata5.png){fig-align="center" width="110%"}
+
+::: notes
+Ejemplo: conocer posiciones más cercanas de taxis Uber y estimar tiempos de espera
+:::
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata6.png){fig-align="center" width="110%"}
+
+::: notes
+Ejemplo: reconocer una canción en pocos segundos como Shazam
+:::
+
+## 
+
+![](figuras\bigdata7.png){fig-align="center" width="110%"}
+
+::: notes
+Ejemplo: combinar distintos sitios de recomendación para un restaurant)
+:::
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata8.png){fig-align="center" width="110%"}
+
+::: notes
+Ejemplo: reconocer una canción en pocos segundos como Shazam
+:::
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica5.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica6.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica7.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica8.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica9.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica10.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica11.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica12.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica13.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica14.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica15.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_logica16.png){fig-align="center" width="110%"}
+
+
+# Las 4 V's del Big Data {background="#43464B" background-image="figuras/fondo2.jpg"}
+
+## ![](figuras\4-Vs-of-big-data.jpg){fig-align="center"}
+
+## 
+
+![](figuras\bigdata_volumen1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_volumen2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_volumen3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_volumen4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_volumen5.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_volumen6.png){fig-align="center" width="110%"}
+
+
+##  {background="#43464B" background-image="figuras/servers.jpg"}
+
+::: columns
+::: {.column width="70%" style="text-align: left; font-size : 165%"} 
+\
+\
+¿Cómo trabajar con estos grandes volúmenes?
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_volumen7.png){fig-align="center" width="120%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_volumen8.png){fig-align="center" width="110%"}
+
+## 
+
+![](figuras\bigdata_velocidad1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_velocidad2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_velocidad3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_velocidad4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_velocidad5.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_velocidad6.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_velocidad7.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_velocidad8b.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_variedad1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_variedad2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+ ![](figuras\bigdata_variedad3.png){fig-align="center" width="110%"}
+
+## 
+
+![](figuras\bigdata_variedad4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_variedad5.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+ ![](figuras\bigdata_variedad6.png){fig-align="center" width="110%"}
+
+## 
+
+![](figuras\bigdata_variedad7.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_veracidad1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_veracidad2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_veracidad3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_veracidad4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_veracidad5.png){fig-align="center" width="110%"}
+
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_valor.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_valor2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Big Data: Fuentes
+
+![](figuras\bigdata2.png){fig-align="center"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_fuentes1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_fuentes2.png){fig-align="center" width="110%"}
+
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_fuentes3.png){fig-align="center" width="110%"}
+
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\bigdata_fuentes4.png){fig-align="center" width="110%"}
+
+
+
+------------------------------------------------------------------------
+
+
+## Big Data: Ejemplo
+
+![](figuras\bigdata1.png){fig-align="center"}
+
+
+<!-- # Estrategia del Big Data {background="#43464B" background-image="figuras/fondo1.jpg"} -->
+
+<!-- ------------------------------------------------------------------------ -->
+
+
+<!-- ## Referencias -->
+
+<!-- Falta incluir referencias del curso de datos masivos de la UC -->
