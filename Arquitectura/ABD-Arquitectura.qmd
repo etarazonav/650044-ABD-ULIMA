@@ -1,0 +1,1312 @@
+---
+title: "Arquitecturas de Big Data"
+subtitle: "UNIDAD 1: INTRODUCCIÓN E INFRAESTRUCTURA DE BIG DATA"
+author: 
+  name: "Enver G. Tarazona Vargas <br> etarazon@ulima.edu.pe"
+institute: "650044 - Analítica con Big Data <br> Universidad de Lima"
+format:
+  #Beamer
+  revealjs: 
+    theme: default
+    preview-links: auto
+    #theme: ["pp.scss"]
+    #theme: [simple, monash.scss]
+    css: [styles.css, custom.css]
+    slide-number: true
+    #multiplex: true
+    chalkboard: 
+      buttons: true
+    title-slide-attributes:
+      data-background-image: figuras/ULIMA_fondo_1.jpg
+      data-background-size: cover 
+      data-background-color: "black"
+    footer: <https://www.ulima.edu.pe>
+    logo: figuras/universidad_logo.png
+execute:
+  echo: true
+#bibliography: bibliografia.bib
+#csl: "apa.csl"
+lang: Es-es
+#citation_package: biblatex
+#nocite: '@*'
+# nocite: | 
+#   @R-bookdown, @xie2015
+#editor: visual
+---
+
+```{r load_packages, message=FALSE, warning=FALSE, include=FALSE}
+library(fontawesome)
+```
+
+<!-- # Motivación {background="#43464B" background-image="figuras/fondo1.jpg"} -->
+
+## ¿Qué aprenderás? {background="#43464B"}
+
+::: {.incremental style="font-size : 100%"}
+
+- Entender el ecosistema Big Data y los esquemas de estrategias de transformación de una empresa a una cultura de datos.
+
+- Comparar distintas alternativas para el almacenamiento en la nube.
+
+- Comprender la forma de resolver un problema realista de extracción de información almacenada en la nube.
+
+- Identificar los principios de las tecnologías en la nube
+
+- Identificar las características del paradigma Data Warehousing.
+
+:::
+
+
+# Estrategia del Big Data {background="#43464B" background-image="figuras/fondo1.jpg"}
+
+##
+
+![](figuras\bigdata_estrategia1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia5.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia6.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia7.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia8.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia9.png){fig-align="center" width="110%"}
+
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia10.png){fig-align="center" width="110%"}
+
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia11.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia12.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia13.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia14.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia15.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia16.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia17.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia18.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia19.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia20.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia21.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia22.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia23.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia24.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia25.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia26.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia27.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia28.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia29.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia30.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia31.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia32.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia33.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia34.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia35.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia36.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia37.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+##
+
+![](figuras\bigdata_estrategia38.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## {.scrollable transition="slide" auto-animate="true"}
+
+::: {style="text-align: center"}
+![](figuras\bigdata_landscape.jpg){fig-align="center" width="110%"}
+:::
+
+
+# Computación en la Nube {background="#43464B" background-image="figuras/fondo1.jpg"}
+
+##  {background-image="figuras/cloud1.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: center;"}
+::: box
+Los dos recursos más solicitados por las empresas son el **espacio para guardar datos y el poder de cómputo**. Para suplir esta necesidad surgieron las **herramientas de la nube**, ya que son capaces de entregar recursos computacionales **on-demmand**.
+:::
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+
+## Ejemplo e-commerce
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+`r fa("credit-card", fill = "red", height = "1.5em")` Para abrir un e-commerce se ha desarrollado la aplicación que va a interactuar con los usuarios.
+:::
+
+::: {.column width="30%"}
+![](figuras/ecommerce.jpg){.absolute top="100" right="0" height="500"}
+:::
+:::
+
+##  {background="#43464B"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+### ¿Cómo hacer que la aplicación esté disponible para el público?
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+##  {background="#43464B" background-image="figuras/servers.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+\
+Es necesario un servidor, su configuración, algún sistema operativo, un web server, una base de datos, y realizar la configuración para exponer la aplicación al mundo.
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+## Escalamiento Vertical
+
+::: columns
+::: {.column width="60%"}
+[El e-commerce ha logrado crecer bastante y dada una alta demanda se cae.]{style="font-weight:bold;background-color:#ccddeb;"}
+
+\
+
+::: columns
+::: {.column width="20%"}
+`r fa("server", fill = "blue", height = "2.5em")`
+:::
+
+::: {.column width="70%"}
+::: {.incremental style="font-size : 75%"}
+**Escalar servidor**
+
+Esto es alquilar un servidor mejor, con más RAM y CPU.
+
+Esto se conoce como **escalamiento vertical**.
+:::
+:::
+:::
+:::
+
+::: {.column width="40%"}
+![](figuras/servers2.jpg){.absolute top="100" right="0" height="500"}
+:::
+:::
+
+## Escalamiento Horizontal {.smaller .fullslide}
+
+![](figuras/Scaling-Concept.png){width="100%" fig-align="center"}
+
+##  {background="#43464B"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+### Para configurar esta red probablemente se necesita un equipo especialista para que realice esta tarea.
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+## El Problema de los Grandes Datos
+
+::: columns
+::: {.column width="60%"}
+\
+
+::: columns
+::: {.column width="20%"}
+`r fa("database", fill = "navy", height = "2.5em")`
+:::
+
+::: {.column width="70%"}
+::: {.incremental style="font-size : 85%"}
+A medida que más usuarios usen la aplicación, son más datos los que se van a generar y no van a caber en un solo computador, por lo que se usará un **sistema de datos distribuidos**.
+:::
+:::
+:::
+:::
+
+::: {.column width="40%"}
+![](figuras/help.jpg){.absolute top="100" right="0" height="500"}
+:::
+:::
+
+##  {background="#43464B"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+### Un sistema de datos distribuido es una tarea muy compleja, ya que implica sincronizar lecturas y escrituras entre varios computadores.
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+## Cluster
+
+![](figuras\cluster1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Cluster
+
+![](figuras\cluster2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+
+## Pipeline de Datos
+
+::: columns
+::: {.column width="70%"}
+::: {.fragment .fade-in}
+::: info-box
+**Problema**: Recomendar productos a clientes
+:::
+:::
+
+::: {.fragment .fade-in style="font-size : 85%"}
+Para preparar [este modelo]{style="font-weight:bold;background-color:#ccddeb;"} se necesita:
+:::
+
+\
+
+::: {.fragment .fade-in style="font-size : 55%"}
+::: columns
+::: {.column width="10%"}
+`r fa("cloud", fill = "navy", height = "2.5em")`
+:::
+
+::: {.column width="80%"}
+Montar un Data Lake, un Data Warehouse, un entorno de entrenamiento y uno de producción para los modelos.
+:::
+:::
+:::
+
+::: {.fragment .fade-in style="font-size : 55%"}
+::: columns
+::: {.column width="10%"}
+`r fa("cubes", fill = "navy", height = "2.5em")`
+:::
+
+::: {.column width="80%"}
+Armar toda esta infraestructura desde cero es una **tarea compleja**, que se escapa bastante de nuestro objetivo, que es hacer **un sistema recomendador**.
+:::
+:::
+:::
+:::
+
+::: {.column width="30%"}
+![](figuras/server3.jpg){.absolute top="100" right="0" height="475"}
+:::
+:::
+
+##  {background-image="figuras/cloud2.jpg"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+
+### La nube cuenta con recursos computacionales y se pueden omitir todos los pasos de configuración, que solían ser muy complejos.
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+## 
+
+![](figuras\cloud_definicion1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## 
+
+![](figuras\cloud_definicion2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+
+## Beneficios de la Nube
+
+::: columns
+::: {.column width="50%"}
+\
+\
+
+::: {.fragment .fade-in-then-semi-out fragment-index="1" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("cloud-upload", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Levantar una aplicación
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-semi-out fragment-index="2" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("database", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Clúster con base de datos
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-semi-out fragment-index="3" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("file", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Guarda una cantidad ilimitada de archivos
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-semi-out fragment-index="4" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("tasks", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Armar un pipeline de datos
+:::
+:::
+:::
+:::
+
+::: {.column width="50%"}
+::: {.fragment .fade-in-then-out fragment-index="1" style="font-size : 65%"}
+::: {.absolute top="225"}
+::: info-box
+**Levantar una aplicación**
+
+En un entorno de producción haciendo pocos clicks. Escala automáticamente ante un aumento de la demanda.
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-out fragment-index="2" style="font-size : 65%"}
+::: {.absolute top="225"}
+::: info-box
+**Clúster con base de datos**
+
+Se monta en minutos, escala automáticamente y no hay configuración del sistema distribuido.
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-out fragment-index="3" style="font-size : 65%"}
+::: {.absolute top="225"}
+::: info-box
+**Guarda una cantidad ilimitada de archivos**
+
+A los que es posible acceder desde la aplicación.
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-out fragment-index="4" style="font-size : 65%"}
+::: {.absolute top="225"}
+::: info-box
+**Armar un pipeline de datos**
+
+Sin la necesidad de configurar un servidor (Data Lake, Data Warehouse), entornos de desarrollo y producción de algoritmos de aprendizaje automático.
+:::
+:::
+:::
+:::
+:::
+
+##  {background="#43464B"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+### No se debe configurar nada y tampoco existe preocupación porque los servicios escalen (server less).
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+## Características
+
+::: columns
+::: {.column width="70%"}
+::: {.fragment .fade-in style="font-size : 85%"}
+Al trabajar con entornos [en la nube]{style="font-weight:bold;background-color:#ccddeb;"} :
+:::
+
+\
+
+::: {.fragment .fade-in style="font-size : 65%"}
+::: columns
+::: {.column width="10%"}
+`r fa("amazon", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Todos los servicios son configurados automáticamente por los proveedores: Google Cloud Platform o Amazon Web Services.
+:::
+:::
+:::
+
+::: {.fragment .fade-in style="font-size : 65%"}
+::: columns
+::: {.column width="10%"}
+`r fa("cubes", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Estos servicios están configurados automáticamente para decidir de forma inteligente cuando necesitan escalar.
+:::
+:::
+:::
+
+::: {.fragment .fade-in style="font-size : 65%"}
+::: columns
+::: {.column width="10%"}
+`r fa("globe", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Un servicio en la nube puede replicarse para satisfacer la necesidad de más recursos.
+:::
+:::
+:::
+:::
+
+::: {.column width="30%"}
+![](figuras/cloud3.jpg){.absolute top="100" right="0" height="450"}
+:::
+:::
+
+##  {background="#43464B" background-image="figuras/analisis1.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+\
+Es un avance notable, ya que podemos extraer datos secundarios y concentrarnos en el problema que queremos resolver, y no en la configuración de la infraestructura.
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+# Herramientas en la nube {background="#43464B" background-image="figuras/fondo1.jpg"}
+
+
+## Modelos de Implementación
+
+![](figuras\cloud_modelos1.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Implementación
+
+![](figuras\cloud_modelos2.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Implementación
+
+![](figuras\cloud_modelos3.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Implementación
+
+![](figuras\cloud_modelos4.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Servicios
+
+![](figuras\cloud_modelos5.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Servicios
+
+![](figuras\cloud_modelos6.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Servicios
+
+![](figuras\cloud_modelos7.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Servicios
+
+![](figuras\cloud_modelos8.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Servicios
+
+![](figuras\cloud_modelos9.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Servicios
+
+![](figuras\cloud_modelos10.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+## Modelos de Servicios
+
+![](figuras\cloud_modelos11.png){fig-align="center" width="110%"}
+
+------------------------------------------------------------------------
+
+
+
+## Proveedores de Servicios en la Nube {.fullslide}
+
+\
+
+![](figuras/proveedores.png){width="100%" fig-align="center"}
+
+---
+
+##  {background="#43464B" background-image="figuras/cloud_servicios1.png"}
+
+---
+
+## Beneficios
+
+\
+\
+
+::: {.fragment .fade-in-then-semi-out fragment-index="1" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("tasks", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Escalamiento horizontal automático
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-semi-out fragment-index="2" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("tasks", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Balanceador de carga
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-semi-out fragment-index="3" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("tasks", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Integración con sistemas de versionamiento
+:::
+:::
+:::
+
+::: {.fragment .fade-in-then-semi-out fragment-index="4" style="font-size : 75%"}
+::: columns
+::: {.column width="10%"}
+`r fa("tasks", fill = "navy", height = "1.5em")`
+:::
+
+::: {.column width="80%"}
+Facilidad para armar pipelines de integración continua
+:::
+:::
+:::
+
+---
+
+##  {background="#43464B" background-image="figuras/cloud_servicios2.png"}
+
+---
+
+##  {background="#43464B" background-image="figuras/cloud_servicios3.png"}
+
+---
+
+##  {background="#43464B" background-image="figuras/cloud_servicios4.png"}
+
+---
+
+##  {background="#43464B" background-image="figuras/cloud_servicios5.png"}
+    
+            
+---
+
+## Principales Servicios en la Nube {.fullslide}
+
+\
+
+![](figuras/servicios.png){width="100%" fig-align="center"}
+
+<!-- ## Sistemas de Bases de Datos -->
+
+<!-- ::: {.fragment .fade-in-then-out} -->
+<!-- ::: info-box -->
+<!-- **SQL** on-demmand, permiten montar rápidamente un clúster de una **base de datos transaccional** que posibilita escalar para un gran número de usuarios y una gran cantidad de datos almacenados. -->
+<!-- ::: -->
+<!-- ::: -->
+
+<!-- ## Data Warehouse -->
+
+<!-- ::: {.fragment .fade-in-then-out} -->
+<!-- ::: info-box -->
+<!-- Sistemas de bases de datos **columnares** que usan algoritmos distribuidos. Su construcción permite almacenar mucha información a bajo costo, **suelen ser usadas para hacer analítica** y no son usadas para ser la base de datos transaccional de una aplicación. -->
+<!-- ::: -->
+<!-- ::: -->
+
+## En resumen...
+
+- Las herramientas en la nube permiten acceder a un gran poder de computo y grandes espacios de almacenamiento, sin la necesidad de tener que configurar los sistemas.
+
+- El auge de las tecnologías en la nube se debe a que son la forma más fácil y rápida de levantar aplicaciones y servicios en entornos de producción.
+
+---
+
+## En resumen...
+
+- Es importante investigar los pros y contras de los proveedores de servicios, para saber cuál es el que resuelve mejor nuestro problema.
+
+- En general, es más conveniente tener todos los servicios bajo el mismo proveedor.
+
+# ¿Por qué Data Warehousing? {background="#43464B" background-image="figuras/fondo2.jpg"}
+
+
+##  {background="#43464B" background-image="figuras/database.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+\
+Las bases de datos transaccionales no son espacios apropiados para hacer consultas analíticas.
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+##  {background="#43464B" background-image="figuras/servers3.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+\
+Por lo tanto, se opta por armar un Data Warehouse, en un sistema preparado para recibir consultas típicas del contexto de análisis de datos.
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+## Paradigma del Data Warehousing {background="#43464B" background-image="figuras/analisis3.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+
+Permite tener un espacio ordenado, donde copiar todos los datos que necesitan los analistas de datos para realizar su trabajo.
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+##  {background="#43464B"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+### ¿Por qué es complicado hacer análisis de datos sobre la misma base de datos de la aplicación?
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+## 
+
+::: columns
+::: {.column width="70%"}
+::: {.fragment .fade-in style="font-size : 100%"}
+Aumenta considerablemente la [carga computacional]{style="font-weight:bold;background-color:#ccddeb;"} :
+:::
+
+\
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("coins", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Las consultas de análisis de datos consumen muchos recursos.
+:::
+:::
+:::
+
+\
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("business-time", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Además, puede ralentizar las operaciones del negocio.
+:::
+:::
+:::
+:::
+
+::: {.column width="30%"}
+![](figuras/analisis4.jpg){.absolute top="100" right="0" height="450"}
+:::
+:::
+
+##  {background="#43464B" background-image="figuras/analisis2.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+\
+Nace así, la idea de tener un lugar pensado para guardar datos y hacer analítica sobre ellos, que esté fuera del ambiente de nuestra aplicación
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+## ¿Cómo se piensa este sistema? {.fullslide}
+
+\
+
+![](figuras/sistema_datos.png){width="100%" fig-align="center"}
+
+## Base de Datos Transaccional
+
+::: columns
+::: {.column width="70%"}
+::: {.fragment .fade-in style="font-size : 100%"}
+Entre este tipo de bases de datos destaca [PLSQL, MySQL o SQL Server]{style="font-weight:bold;background-color:#ccddeb;"} :
+:::
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("arrow-right-arrow-left", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Está pensado para mantener las transacciones de una organización (operación de una aplicación).
+:::
+:::
+:::
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("clipboard-question", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+También, para recibir varias operaciones de lectura y escritura, pero donde cada operación es liviana.
+:::
+:::
+:::
+:::
+
+::: {.column width="30%"}
+![](figuras/server3.jpg){.absolute top="100" right="0" height="450"}
+:::
+:::
+
+## Ejemplo e-commerce
+
+\
+
+::: columns
+::: {.column width="25%"}
+::: {.fragment .fade-in-then-semi-out fragment-index="1" style="font-size : 75%"}
+![](figuras/ec1.png) Consultar los datos de una compra que tenga un identificador determinado.
+:::
+:::
+
+::: {.column width="25%"}
+::: {.fragment .fade-in-then-semi-out fragment-index="2" style="font-size : 75%"}
+![](figuras/ec2.png) Insertar un nuevo cliente o una nueva compra.
+:::
+:::
+
+::: {.column width="25%"}
+::: {.fragment .fade-in-then-semi-out fragment-index="3" style="font-size : 75%"}
+![](figuras/ec3.png) Modificar el valor de un producto.
+:::
+:::
+
+::: {.column width="25%"}
+::: {.fragment .fade-in-then-semi-out fragment-index="4" style="font-size : 75%"}
+![](figuras/ec4.png) Revisar las compras que ha hecho un usuario en particular.
+:::
+:::
+:::
+
+## Índices {.fullslide}
+
+\
+
+![](figuras/db-index.png){width="100%" fig-align="center"}
+
+## Data Warehousing
+
+::: columns
+::: {.column width="70%"}
+::: {.fragment .fade-in style="font-size : 100%"}
+Es un sistema para encontrar [datos ordenados]{style="font-weight:bold;background-color:#ccddeb;"} :
+:::
+
+\
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("1", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Que están listos para ser consultados por los analistas de datos.
+:::
+:::
+:::
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("2", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Hay datos históricos que pueden servir para diversas tareas.
+:::
+:::
+:::
+:::
+
+::: {.column width="30%"}
+![](figuras/servers4.jpg){.absolute top="100" right="0" height="450"}
+:::
+:::
+
+## Ejemplo de Uso de Data Warehousing
+
+\
+
+::: columns
+::: {.column width="33.3%"}
+::: {.fragment .fade-in-then-semi-out fragment-index="1" style="font-size : 75%"}
+![](figuras/dw1.png) Hacer reportes con agregaciones para distintas ventanas de tiempo.
+:::
+:::
+
+::: {.column width="33.4%"}
+::: {.fragment .fade-in-then-semi-out fragment-index="2" style="font-size : 75%"}
+![](figuras/dw2.png) Hacer análisis complejos de datos para encontrar clusters o patrones en los datos.
+:::
+:::
+
+::: {.column width="33.3%"}
+::: {.fragment .fade-in-then-semi-out fragment-index="3" style="font-size : 75%"}
+![](figuras/dw3.png) Alimentar las distintas herramientas de visualización de datos.
+:::
+:::
+:::
+
+##  {background="#43464B"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+### Los sistemas más populares para Data Warehousing son los ofrecidos por un proveedor en la nube.
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+##  {background="#43464B" background-image="figuras/servers5.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+\
+**Todos estos sistemas se centran en el mismo principio: ser un sistema de datos para Data Warehousing que es serverless, gestionado por el proveedor en la nube.**
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+##  {background="#43464B"}
+
+::: columns
+::: {.column width="70%"}
+\
+\
+\
+
+### Pueden procesar grandes cantidades de información, pero mientras más datos procese en una consulta, más caro cobrarán por el servicio.
+:::
+
+::: {.column width="30%"}
+:::
+:::
+
+##  {background="#43464B" background-image="figuras/e-commerce-1.jpg"}
+
+::: columns
+::: {.column width="40%" style="text-align: left;"}
+\
+\
+
+**Los sistemas para Data Warehouse tienden a ser lentos y no necesariamente aseguran funcionar cuando están sujetos a los volúmenes de transacciones en aplicaciones masivas, como bancos o páginas de e-commerce.**
+:::
+
+::: {.column width="60%"}
+:::
+:::
+
+# Patrones y Algoritmos en Data Warehousing {background="#43464B" background-image="figuras/fondo2.jpg"}
+
+## Construyendo un Data Warehouse {.fullslide}
+
+Los [patrones]{style="font-weight:bold;background-color:#ccddeb;"} más comunes para [llevar datos]{style="font-weight:bold;background-color:#ccddeb;"} a un Data Warehouse [son dos]{style="font-weight:bold;background-color:#ccddeb;"}:
+
+![](figuras/patrones.png){width="100%" fig-align="center"}
+
+## ETL (Extract-Transform-Load)
+::: columns
+::: {.column width="50%"}
+![](figuras/ETL.png)
+:::
+
+::: {.column width="50%"}
+\
+\
+Consiste en tomar todos los datos de las fuentes de datos, procesarlos y luego guardarlos en un Data Warehouse.
+:::
+:::
+
+## ELT (Extract-Load-Transform)
+
+::: columns
+::: {.column width="50%"}
+\
+\
+Consiste en tomar todos los datos de las fuentes y guardarlos sin procesar en una capa intermedia (Data Lake). Luego, procesar los datos crudos y montarlos sobre el Data warehouse.
+:::
+
+::: {.column width="50%"}
+![](figuras/ELT.png) 
+:::
+:::
+
+## ¿Cuál es el patrón más usado? {.fullslide}
+
+\
+
+![](figuras/patrones2.png){width="100%" fig-align="center"}
+
+## Data Lake vs. Data Warehousing
+
+::: columns
+::: {.column width="70%"}
+::: {.fragment .fade-in style="font-size : 100%"}
+Un [Data Lake]{style="font-weight:bold;background-color:#ccddeb;"} es un espacio donde se guarda información de [distintas fuentes]{style="font-weight:bold;background-color:#ccddeb;"} :
+:::
+
+\
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("bars-staggered", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+Sin estructura y en crudo, es decir, sin procesar.
+:::
+:::
+:::
+
+::: {.fragment .fade-in style="font-size : 85%"}
+::: columns
+::: {.column width="10%"}
+`r fa("water", fill = "navy", height = "2.0em")`
+:::
+
+::: {.column width="80%"}
+No es un lugar donde un analista quiera ir a buscar datos, pues es "difícil navegar" por este lago.
+:::
+:::
+:::
+:::
+
+::: {.column width="30%"}
+![](figuras/datalake.png){.absolute top="100" right="0" height="450"}
+:::
+:::
+
+
+
+
+<!-- ------------------------------------------------------------------------ -->
+
+
+<!-- ## Referencias -->
+
+<!-- Falta incluir referencias del curso de datos masivos de la UC -->
