@@ -1,0 +1,167 @@
+---
+title: "Actividad Práctica 1: Introducción al Procesamiento de Datos en GCP"
+subtitle: "UNIDAD 1: INTRODUCCIÓN E INFRAESTRUCTURA DE BIG DATA"
+author: 
+  name: "Enver G. Tarazona Vargas <br> etarazon@ulima.edu.pe"
+institute: "650044 - Analítica con Big Data <br> Universidad de Lima"
+papersize: a4
+#editor: visual
+lang: sp
+format: html
+---
+
+
+# Almacenamiento de Datos de Ventas con Google Cloud Storage
+
+## Objetivo:
+En esta actividad, aprenderás a crear un bucket en Google Cloud Storage, comprimir un archivo .csv y realizar consultas SQL sobre los datos utilizando BigQuery. Trabajarás con un conjunto de datos de ventas de una tienda en línea. A lo largo de la actividad, comprenderás la importancia de cada paso y los conceptos técnicos clave involucrados.
+
+## Paso 1: Acceder a Google Cloud Console
+
+### ¿Por qué es importante?
+Google Cloud Console es la plataforma central desde la cual gestionarás todos los servicios en la nube de Google. Aprender a navegar y utilizar esta consola es fundamental para poder acceder a las herramientas de Google Cloud Platform (GCP) que utilizarás para el almacenamiento y análisis de datos.
+
+### Concepto Clave: Google Cloud Console
+Google Cloud Console es una interfaz web que te permite gestionar tus proyectos en la nube, incluyendo la creación y configuración de servicios como almacenamiento, bases de datos, y herramientas de análisis.
+
+1. Inicia sesión en [Google Cloud Console](https://console.cloud.google.com) utilizando tu cuenta de Google.
+2. Asegúrate de estar trabajando en el proyecto correcto. Si no tienes un proyecto, crea uno nuevo:
+   - Ve al menú de la esquina superior derecha y selecciona "Nuevo Proyecto".
+   - Asigna un nombre a tu proyecto, como `Proyecto-Ventas-Tienda-2024`, y selecciona una ubicación de organización si es necesario.
+   - Haz clic en "Crear".
+
+## Paso 2: Crear un Bucket en Google Cloud Storage
+
+### ¿Por qué es importante?
+Un bucket en Google Cloud Storage es un contenedor en la nube donde puedes almacenar objetos como archivos de datos. Crear un bucket es el primer paso para organizar y almacenar tus datos de manera segura y eficiente en la nube. Al tener los datos en Google Cloud Storage, puedes acceder a ellos fácilmente desde otras herramientas como BigQuery, lo que facilita su análisis y manejo.
+
+### Concepto Clave: Bucket
+Un bucket es un espacio de almacenamiento en Google Cloud Storage diseñado para guardar objetos de datos como archivos, imágenes, y videos. Los buckets son altamente escalables y ofrecen varias opciones de seguridad y control de acceso.
+
+1. Desde el menú de navegación, selecciona "Cloud Storage" y luego haz clic en "Crear bucket".
+
+2. Configura el bucket con los siguientes detalles:
+   - **Nombre del Bucket**: Escribe `tiendaventasdatos2024`.
+   - **Ubicación Geográfica**: Selecciona "Regional" y elige la región más cercana a ti, por ejemplo, `us-central1`. Esto es importante para optimizar el rendimiento y reducir la latencia al acceder a los datos.
+   - **Clase de Almacenamiento**: Selecciona "Standard" (Almacenamiento estándar para acceso frecuente). Esta opción es ideal para datos a los que se accede regularmente.
+   - **Control de Acceso**: Selecciona "Uniforme" para gestionar permisos a nivel de bucket, lo que simplifica la administración de permisos.
+   - **Encriptación**: Deja la opción predeterminada "Google-managed keys" para la encriptación. Esto asegura que tus datos están protegidos en la nube.
+
+3. Haz clic en "Crear" para finalizar la configuración del bucket.
+
+## Paso 3: Subir un Archivo .csv al Bucket
+
+### ¿Por qué es importante?
+Subir un archivo .csv al bucket te permite almacenar los datos de manera centralizada y segura en la nube. Al tener los datos en la nube, puedes acceder a ellos desde cualquier lugar y con diversas herramientas de análisis como BigQuery. Esto es fundamental para trabajar con grandes volúmenes de datos en proyectos de Big Data.
+
+### Concepto Clave: Archivo .csv
+Un archivo .csv (Comma Separated Values) es un formato de archivo comúnmente utilizado para almacenar datos tabulares, donde cada línea representa un registro y las columnas están separadas por comas. Este formato es ampliamente compatible con herramientas de análisis de datos.
+
+1. Descarga el siguiente archivo de datos de ventas de ejemplo y guárdalo en tu computadora:
+   ```plaintext
+   id_producto,categoria,fecha_venta,cantidad,precio_total
+   1,Electrónica,2024-01-15,3,450
+   2,Ropa,2024-01-16,2,120
+   3,Juguetes,2024-01-17,1,30
+   4,Hogar,2024-01-18,4,200
+   5,Electrónica,2024-01-19,1,150
+   ```
+   Nombra el archivo `ventas_tienda.csv`.
+
+2. En Google Cloud Console, navega a tu bucket `tiendaventasdatos2024`.
+3. Haz clic en "Subir archivos" y selecciona `ventas_tienda.csv` desde tu computadora.
+4. Una vez que se haya subido el archivo, configúralo para que tenga acceso restringido:
+   - Haz clic en el archivo `ventas_tienda.csv` en tu bucket.
+   - Selecciona "Editar permisos" y asegúrate de que solo tú y otros usuarios autorizados puedan acceder al archivo. Esto es importante para proteger los datos y asegurarte de que solo las personas adecuadas puedan acceder a ellos.
+
+## Paso 4: Comprimir el Archivo en Google Cloud Storage usando Google Cloud Shell
+
+### ¿Por qué es importante?
+Comprimir un archivo dentro de Google Cloud no solo ahorra espacio de almacenamiento, sino que también optimiza la transferencia de datos cuando los archivos necesitan ser movidos o utilizados en análisis. Realizar esta operación dentro de Google Cloud garantiza que todos los pasos del proceso se mantengan en la nube, sin necesidad de descargar o subir archivos manualmente.
+
+### Concepto Clave: Google Cloud Shell
+Google Cloud Shell es un entorno de línea de comandos que te permite gestionar tus recursos de Google Cloud directamente desde un navegador. Usar Google Cloud Shell para operaciones como la compresión de archivos te permite realizar tareas avanzadas sin necesidad de salir de la plataforma.
+
+### Pasos para Comprimir el Archivo usando Google Cloud Shell:
+
+1. **Abrir Google Cloud Shell**:
+   - En la parte superior derecha de Google Cloud Console, haz clic en el ícono de terminal (parece un “>_”) para abrir Google Cloud Shell.
+   - Espera unos segundos mientras el entorno de Cloud Shell se inicializa.
+
+2. **Navegar al Bucket y Comprimir el Archivo**:
+   - Una vez que Google Cloud Shell esté listo, usa el siguiente comando para listar los archivos en tu bucket y asegurarte de que el archivo `ventas_tienda.csv` está presente:
+     ```bash
+     gsutil ls gs://tiendaventasdatos2024/
+     ```
+   - Ahora, usa el siguiente comando para comprimir el archivo:
+     ```bash
+     gsutil cp gs://tiendaventasdatos2024/ventas_tienda.csv - | gzip > ventas_tienda.csv.gz
+     ```
+   - Este comando hace lo siguiente:
+     - **`gsutil cp`**: Copia el archivo desde Google Cloud Storage.
+     - **`- | gzip > ventas_tienda.csv.gz`**: Comprime el archivo utilizando `gzip` y lo guarda como `ventas_tienda.csv.gz`.
+
+3. **Subir el Archivo Comprimido a Google Cloud Storage**:
+   - Una vez que el archivo esté comprimido, usa el siguiente comando para subir el archivo comprimido de vuelta al bucket de Google Cloud Storage:
+     ```bash
+     gsutil cp ventas_tienda.csv.gz gs://tiendaventasdatos2024/ventas_tienda.csv.gz
+     ```
+
+4. **Verificar la Compresión**:
+   - Después de subir el archivo comprimido, verifica que el archivo `ventas_tienda.csv.gz` esté presente en tu bucket:
+     ```bash
+     gsutil ls gs://tiendaventasdatos2024/
+     ```
+   - También puedes verificar visualmente en la consola de Google Cloud Storage para asegurarte de que el archivo comprimido esté en el bucket.
+
+## Paso 5: Importar el Archivo `ventas_tienda.csv.gz` desde el Bucket Público de Google Cloud Storage a BigQuery
+
+### ¿Por qué es importante?
+Importar datos desde Google Cloud Storage a BigQuery te permite realizar análisis avanzados utilizando SQL directamente en la nube. Esto es especialmente útil cuando trabajas con datos compartidos en un entorno colaborativo, como un bucket público proporcionado por tu instructor.
+
+### Concepto Clave: BigQuery y Buckets Públicos
+BigQuery es una plataforma de análisis de datos gestionada y altamente escalable que permite realizar consultas SQL sobre grandes conjuntos de datos. Al acceder a un bucket público, puedes utilizar datos compartidos por otros usuarios, lo que facilita el trabajo colaborativo.
+
+### Pasos para Importar el Archivo desde el Bucket Público a BigQuery:
+
+1. **Accede a BigQuery**:
+   - En Google Cloud Console, navega al servicio de BigQuery desde el menú de navegación o busca "BigQuery" en la barra de búsqueda.
+
+2. **Selecciona tu Proyecto y Conjunto de Datos**:
+   - En la interfaz de BigQuery, selecciona el proyecto en el que estás trabajando.
+   - Si ya has creado el conjunto de datos, selecciónalo. Si no, sigue estos pasos para crearlo:
+     - Haz clic en los tres puntos junto al nombre del proyecto y selecciona "Crear conjunto de datos" (Create dataset).
+     - Nombra el conjunto de datos, por ejemplo, `ventas_tienda_dataset`.
+     - Selecciona la misma región que usaste para el bucket (`us-central1`).
+     -
+
+ Haz clic en "Crear conjunto de datos" (Create dataset).
+
+3. **Crear una Tabla en BigQuery desde Google Cloud Storage**:
+   - Dentro del conjunto de datos `ventas_tienda_dataset`, selecciona "Crear tabla" (Create table).
+   - En "Fuente de creación de tabla" (Source), selecciona "Google Cloud Storage".
+   - En "Selecciona un archivo del bucket de GCS", ingresa manualmente la ruta completa al archivo comprimido que subiste, utilizando el formato:
+     ```
+     tiendaventasdatos2024/ventas_tienda.csv.gz
+     ```
+   - Asegúrate de que "Formato del archivo" (File format) esté configurado como "CSV".
+   - Activa la opción "Autodetectar" (Autodetect) para que BigQuery detecte automáticamente el esquema de la tabla, lo que significa que BigQuery identificará las columnas y tipos de datos del archivo CSV.
+
+4. **Configura los Detalles de la Tabla**:
+   - En la sección "Destino" (Destination):
+     - Selecciona el conjunto de datos `ventas_tienda_dataset`.
+     - Nombra la nueva tabla `ventas_tienda`.
+   - Bajo la sección "Esquema" (Schema), si no usaste la autodetección, puedes ingresar manualmente las columnas y sus tipos de datos, como `id_producto` (INTEGER), `categoria` (STRING), `fecha_venta` (DATE), `cantidad` (INTEGER), y `precio_total` (FLOAT).
+
+5. **Opciones Avanzadas (Opcional)**:
+   - Si es necesario, puedes configurar opciones avanzadas como la fila de encabezado, caracteres delimitadores, y más. Para este ejemplo básico, las opciones predeterminadas funcionarán correctamente.
+
+6. **Crear la Tabla**:
+   - Haz clic en "Crear tabla" (Create table) para finalizar el proceso.
+   - BigQuery importará los datos desde el archivo `ventas_tienda.csv.gz` en Google Cloud Storage a la nueva tabla `ventas_tienda` dentro de tu conjunto de datos.
+
+7. **Verifica la Importación**:
+   - Una vez que la tabla esté creada, puedes hacer clic en su nombre en BigQuery para ver una muestra de los datos y asegurarte de que se importaron correctamente.
+   - Esto también te permitirá verificar que el esquema fue correctamente identificado y que los datos están listos para ser consultados.
+
+

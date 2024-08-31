@@ -1,0 +1,21 @@
+id_campaña,fecha_inicio,fecha_fin,presupuesto,canal
+1,2023-01-15,2023-02-05,,Televisión
+2,2023-01-17,2023-02-18,4004.28,Publicidad online
+3,2023-01-02,2023-02-04,3061.18,Correo electrónico
+4,2023-01-07,2023-02-01,,Publicidad online
+5,2023-01-26,2023-03-22,3941.47,Publicidad online
+6,2023-01-16,2023-02-20,,Publicidad online
+7,2023-01-05,2023-02-06,4614.12,Publicidad online
+8,2023-01-16,2023-02-20,3287.97,Correo electrónico
+9,2023-01-25,2023-02-20,4014.34,Televisión
+10,2023-01-19,2023-03-18,4008.18,Correo electrónico
+11,2023-01-02,2023-02-27,1623.0,Correo electrónico
+12,2023-01-15,2023-02-26,1656.88,Televisión
+13,2023-01-04,2023-03-04,1283.54,Correo electrónico
+14,2023-01-02,2023-02-10,2279.65,Publicidad online
+15,2023-01-27,2023-02-18,,Publicidad online
+16,2023-01-23,2023-03-13,,Televisión
+17,2023-01-10,2023-02-12,2723.97,Televisión
+18,2023-01-22,2023-02-10,3904.97,Televisión
+19,2023-01-24,2023-02-24,3773.59,Publicidad online
+20,2023-01-29,2023-02-24,1817.93,Televisión

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="sp" xml:lang="sp"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Enver G. Tarazona Vargas   etarazon@ulima.edu.pe">
+
+<title>Actividad Práctica 1: Introducción al Procesamiento de Datos en GCP</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="ABB-Actividad1-GCP_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ABB-Actividad1-GCP_files/libs/quarto-html/quarto.js"></script>
+<script src="ABB-Actividad1-GCP_files/libs/quarto-html/popper.min.js"></script>
+<script src="ABB-Actividad1-GCP_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ABB-Actividad1-GCP_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ABB-Actividad1-GCP_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ABB-Actividad1-GCP_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ABB-Actividad1-GCP_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ABB-Actividad1-GCP_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ABB-Actividad1-GCP_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Actividad Práctica 1: Introducción al Procesamiento de Datos en GCP</h1>
+<p class="subtitle lead">UNIDAD 1: INTRODUCCIÓN E INFRAESTRUCTURA DE BIG DATA</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Enver G. Tarazona Vargas <br> etarazon@ulima.edu.pe </p>
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            650044 - Analítica con Big Data <br> Universidad de Lima
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="almacenamiento-de-datos-de-ventas-con-google-cloud-storage" class="level1">
+<h1>Almacenamiento de Datos de Ventas con Google Cloud Storage</h1>
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">Objetivo:</h2>
+<p>En esta actividad, aprenderás a crear un bucket en Google Cloud Storage, comprimir un archivo .csv y realizar consultas SQL sobre los datos utilizando BigQuery. Trabajarás con un conjunto de datos de ventas de una tienda en línea. A lo largo de la actividad, comprenderás la importancia de cada paso y los conceptos técnicos clave involucrados.</p>
+</section>
+<section id="paso-1-acceder-a-google-cloud-console" class="level2">
+<h2 class="anchored" data-anchor-id="paso-1-acceder-a-google-cloud-console">Paso 1: Acceder a Google Cloud Console</h2>
+<section id="por-qué-es-importante" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-importante">¿Por qué es importante?</h3>
+<p>Google Cloud Console es la plataforma central desde la cual gestionarás todos los servicios en la nube de Google. Aprender a navegar y utilizar esta consola es fundamental para poder acceder a las herramientas de Google Cloud Platform (GCP) que utilizarás para el almacenamiento y análisis de datos.</p>
+</section>
+<section id="concepto-clave-google-cloud-console" class="level3">
+<h3 class="anchored" data-anchor-id="concepto-clave-google-cloud-console">Concepto Clave: Google Cloud Console</h3>
+<p>Google Cloud Console es una interfaz web que te permite gestionar tus proyectos en la nube, incluyendo la creación y configuración de servicios como almacenamiento, bases de datos, y herramientas de análisis.</p>
+<ol type="1">
+<li>Inicia sesión en <a href="https://console.cloud.google.com">Google Cloud Console</a> utilizando tu cuenta de Google.</li>
+<li>Asegúrate de estar trabajando en el proyecto correcto. Si no tienes un proyecto, crea uno nuevo:
+<ul>
+<li>Ve al menú de la esquina superior derecha y selecciona “Nuevo Proyecto”.</li>
+<li>Asigna un nombre a tu proyecto, como <code>Proyecto-Ventas-Tienda-2024</code>, y selecciona una ubicación de organización si es necesario.</li>
+<li>Haz clic en “Crear”.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="paso-2-crear-un-bucket-en-google-cloud-storage" class="level2">
+<h2 class="anchored" data-anchor-id="paso-2-crear-un-bucket-en-google-cloud-storage">Paso 2: Crear un Bucket en Google Cloud Storage</h2>
+<section id="por-qué-es-importante-1" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-importante-1">¿Por qué es importante?</h3>
+<p>Un bucket en Google Cloud Storage es un contenedor en la nube donde puedes almacenar objetos como archivos de datos. Crear un bucket es el primer paso para organizar y almacenar tus datos de manera segura y eficiente en la nube. Al tener los datos en Google Cloud Storage, puedes acceder a ellos fácilmente desde otras herramientas como BigQuery, lo que facilita su análisis y manejo.</p>
+</section>
+<section id="concepto-clave-bucket" class="level3">
+<h3 class="anchored" data-anchor-id="concepto-clave-bucket">Concepto Clave: Bucket</h3>
+<p>Un bucket es un espacio de almacenamiento en Google Cloud Storage diseñado para guardar objetos de datos como archivos, imágenes, y videos. Los buckets son altamente escalables y ofrecen varias opciones de seguridad y control de acceso.</p>
+<ol type="1">
+<li><p>Desde el menú de navegación, selecciona “Cloud Storage” y luego haz clic en “Crear bucket”.</p></li>
+<li><p>Configura el bucket con los siguientes detalles:</p>
+<ul>
+<li><strong>Nombre del Bucket</strong>: Escribe <code>tiendaventasdatos2024</code>.</li>
+<li><strong>Ubicación Geográfica</strong>: Selecciona “Regional” y elige la región más cercana a ti, por ejemplo, <code>us-central1</code>. Esto es importante para optimizar el rendimiento y reducir la latencia al acceder a los datos.</li>
+<li><strong>Clase de Almacenamiento</strong>: Selecciona “Standard” (Almacenamiento estándar para acceso frecuente). Esta opción es ideal para datos a los que se accede regularmente.</li>
+<li><strong>Control de Acceso</strong>: Selecciona “Uniforme” para gestionar permisos a nivel de bucket, lo que simplifica la administración de permisos.</li>
+<li><strong>Encriptación</strong>: Deja la opción predeterminada “Google-managed keys” para la encriptación. Esto asegura que tus datos están protegidos en la nube.</li>
+</ul></li>
+<li><p>Haz clic en “Crear” para finalizar la configuración del bucket.</p></li>
+</ol>
+</section>
+</section>
+<section id="paso-3-subir-un-archivo-.csv-al-bucket" class="level2">
+<h2 class="anchored" data-anchor-id="paso-3-subir-un-archivo-.csv-al-bucket">Paso 3: Subir un Archivo .csv al Bucket</h2>
+<section id="por-qué-es-importante-2" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-importante-2">¿Por qué es importante?</h3>
+<p>Subir un archivo .csv al bucket te permite almacenar los datos de manera centralizada y segura en la nube. Al tener los datos en la nube, puedes acceder a ellos desde cualquier lugar y con diversas herramientas de análisis como BigQuery. Esto es fundamental para trabajar con grandes volúmenes de datos en proyectos de Big Data.</p>
+</section>
+<section id="concepto-clave-archivo-.csv" class="level3">
+<h3 class="anchored" data-anchor-id="concepto-clave-archivo-.csv">Concepto Clave: Archivo .csv</h3>
+<p>Un archivo .csv (Comma Separated Values) es un formato de archivo comúnmente utilizado para almacenar datos tabulares, donde cada línea representa un registro y las columnas están separadas por comas. Este formato es ampliamente compatible con herramientas de análisis de datos.</p>
+<ol type="1">
+<li><p>Descarga el siguiente archivo de datos de ventas de ejemplo y guárdalo en tu computadora:</p>
+<pre class="plaintext"><code>id_producto,categoria,fecha_venta,cantidad,precio_total
+1,Electrónica,2024-01-15,3,450
+2,Ropa,2024-01-16,2,120
+3,Juguetes,2024-01-17,1,30
+4,Hogar,2024-01-18,4,200
+5,Electrónica,2024-01-19,1,150</code></pre>
+<p>Nombra el archivo <code>ventas_tienda.csv</code>.</p></li>
+<li><p>En Google Cloud Console, navega a tu bucket <code>tiendaventasdatos2024</code>.</p></li>
+<li><p>Haz clic en “Subir archivos” y selecciona <code>ventas_tienda.csv</code> desde tu computadora.</p></li>
+<li><p>Una vez que se haya subido el archivo, configúralo para que tenga acceso restringido:</p>
+<ul>
+<li>Haz clic en el archivo <code>ventas_tienda.csv</code> en tu bucket.</li>
+<li>Selecciona “Editar permisos” y asegúrate de que solo tú y otros usuarios autorizados puedan acceder al archivo. Esto es importante para proteger los datos y asegurarte de que solo las personas adecuadas puedan acceder a ellos.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="paso-4-comprimir-el-archivo-en-google-cloud-storage-usando-google-cloud-shell" class="level2">
+<h2 class="anchored" data-anchor-id="paso-4-comprimir-el-archivo-en-google-cloud-storage-usando-google-cloud-shell">Paso 4: Comprimir el Archivo en Google Cloud Storage usando Google Cloud Shell</h2>
+<section id="por-qué-es-importante-3" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-importante-3">¿Por qué es importante?</h3>
+<p>Comprimir un archivo dentro de Google Cloud no solo ahorra espacio de almacenamiento, sino que también optimiza la transferencia de datos cuando los archivos necesitan ser movidos o utilizados en análisis. Realizar esta operación dentro de Google Cloud garantiza que todos los pasos del proceso se mantengan en la nube, sin necesidad de descargar o subir archivos manualmente.</p>
+</section>
+<section id="concepto-clave-google-cloud-shell" class="level3">
+<h3 class="anchored" data-anchor-id="concepto-clave-google-cloud-shell">Concepto Clave: Google Cloud Shell</h3>
+<p>Google Cloud Shell es un entorno de línea de comandos que te permite gestionar tus recursos de Google Cloud directamente desde un navegador. Usar Google Cloud Shell para operaciones como la compresión de archivos te permite realizar tareas avanzadas sin necesidad de salir de la plataforma.</p>
+</section>
+<section id="pasos-para-comprimir-el-archivo-usando-google-cloud-shell" class="level3">
+<h3 class="anchored" data-anchor-id="pasos-para-comprimir-el-archivo-usando-google-cloud-shell">Pasos para Comprimir el Archivo usando Google Cloud Shell:</h3>
+<ol type="1">
+<li><strong>Abrir Google Cloud Shell</strong>:
+<ul>
+<li>En la parte superior derecha de Google Cloud Console, haz clic en el ícono de terminal (parece un “&gt;_”) para abrir Google Cloud Shell.</li>
+<li>Espera unos segundos mientras el entorno de Cloud Shell se inicializa.</li>
+</ul></li>
+<li><strong>Navegar al Bucket y Comprimir el Archivo</strong>:
+<ul>
+<li><p>Una vez que Google Cloud Shell esté listo, usa el siguiente comando para listar los archivos en tu bucket y asegurarte de que el archivo <code>ventas_tienda.csv</code> está presente:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gsutil</span> ls gs://tiendaventasdatos2024/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Ahora, usa el siguiente comando para comprimir el archivo:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gsutil</span> cp gs://tiendaventasdatos2024/ventas_tienda.csv <span class="at">-</span> <span class="kw">|</span> <span class="fu">gzip</span> <span class="op">&gt;</span> ventas_tienda.csv.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Este comando hace lo siguiente:</p>
+<ul>
+<li><strong><code>gsutil cp</code></strong>: Copia el archivo desde Google Cloud Storage.</li>
+<li><strong><code>- | gzip &gt; ventas_tienda.csv.gz</code></strong>: Comprime el archivo utilizando <code>gzip</code> y lo guarda como <code>ventas_tienda.csv.gz</code>.</li>
+</ul></li>
+</ul></li>
+<li><strong>Subir el Archivo Comprimido a Google Cloud Storage</strong>:
+<ul>
+<li><p>Una vez que el archivo esté comprimido, usa el siguiente comando para subir el archivo comprimido de vuelta al bucket de Google Cloud Storage:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gsutil</span> cp ventas_tienda.csv.gz gs://tiendaventasdatos2024/ventas_tienda.csv.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+<li><strong>Verificar la Compresión</strong>:
+<ul>
+<li><p>Después de subir el archivo comprimido, verifica que el archivo <code>ventas_tienda.csv.gz</code> esté presente en tu bucket:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gsutil</span> ls gs://tiendaventasdatos2024/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>También puedes verificar visualmente en la consola de Google Cloud Storage para asegurarte de que el archivo comprimido esté en el bucket.</p></li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="paso-5-importar-el-archivo-ventas_tienda.csv.gz-desde-el-bucket-público-de-google-cloud-storage-a-bigquery" class="level2">
+<h2 class="anchored" data-anchor-id="paso-5-importar-el-archivo-ventas_tienda.csv.gz-desde-el-bucket-público-de-google-cloud-storage-a-bigquery">Paso 5: Importar el Archivo <code>ventas_tienda.csv.gz</code> desde el Bucket Público de Google Cloud Storage a BigQuery</h2>
+<section id="por-qué-es-importante-4" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-importante-4">¿Por qué es importante?</h3>
+<p>Importar datos desde Google Cloud Storage a BigQuery te permite realizar análisis avanzados utilizando SQL directamente en la nube. Esto es especialmente útil cuando trabajas con datos compartidos en un entorno colaborativo, como un bucket público proporcionado por tu instructor.</p>
+</section>
+<section id="concepto-clave-bigquery-y-buckets-públicos" class="level3">
+<h3 class="anchored" data-anchor-id="concepto-clave-bigquery-y-buckets-públicos">Concepto Clave: BigQuery y Buckets Públicos</h3>
+<p>BigQuery es una plataforma de análisis de datos gestionada y altamente escalable que permite realizar consultas SQL sobre grandes conjuntos de datos. Al acceder a un bucket público, puedes utilizar datos compartidos por otros usuarios, lo que facilita el trabajo colaborativo.</p>
+</section>
+<section id="pasos-para-importar-el-archivo-desde-el-bucket-público-a-bigquery" class="level3">
+<h3 class="anchored" data-anchor-id="pasos-para-importar-el-archivo-desde-el-bucket-público-a-bigquery">Pasos para Importar el Archivo desde el Bucket Público a BigQuery:</h3>
+<ol type="1">
+<li><strong>Accede a BigQuery</strong>:
+<ul>
+<li>En Google Cloud Console, navega al servicio de BigQuery desde el menú de navegación o busca “BigQuery” en la barra de búsqueda.</li>
+</ul></li>
+<li><strong>Selecciona tu Proyecto y Conjunto de Datos</strong>:
+<ul>
+<li>En la interfaz de BigQuery, selecciona el proyecto en el que estás trabajando.</li>
+<li>Si ya has creado el conjunto de datos, selecciónalo. Si no, sigue estos pasos para crearlo:
+<ul>
+<li>Haz clic en los tres puntos junto al nombre del proyecto y selecciona “Crear conjunto de datos” (Create dataset).</li>
+<li>Nombra el conjunto de datos, por ejemplo, <code>ventas_tienda_dataset</code>.</li>
+<li>Selecciona la misma región que usaste para el bucket (<code>us-central1</code>).</li>
+<li></li>
+</ul></li>
+</ul></li>
+</ol>
+<p>Haz clic en “Crear conjunto de datos” (Create dataset).</p>
+<ol start="3" type="1">
+<li><strong>Crear una Tabla en BigQuery desde Google Cloud Storage</strong>:
+<ul>
+<li><p>Dentro del conjunto de datos <code>ventas_tienda_dataset</code>, selecciona “Crear tabla” (Create table).</p></li>
+<li><p>En “Fuente de creación de tabla” (Source), selecciona “Google Cloud Storage”.</p></li>
+<li><p>En “Selecciona un archivo del bucket de GCS”, ingresa manualmente la ruta completa al archivo comprimido que subiste, utilizando el formato:</p>
+<pre><code>tiendaventasdatos2024/ventas_tienda.csv.gz</code></pre></li>
+<li><p>Asegúrate de que “Formato del archivo” (File format) esté configurado como “CSV”.</p></li>
+<li><p>Activa la opción “Autodetectar” (Autodetect) para que BigQuery detecte automáticamente el esquema de la tabla, lo que significa que BigQuery identificará las columnas y tipos de datos del archivo CSV.</p></li>
+</ul></li>
+<li><strong>Configura los Detalles de la Tabla</strong>:
+<ul>
+<li>En la sección “Destino” (Destination):
+<ul>
+<li>Selecciona el conjunto de datos <code>ventas_tienda_dataset</code>.</li>
+<li>Nombra la nueva tabla <code>ventas_tienda</code>.</li>
+</ul></li>
+<li>Bajo la sección “Esquema” (Schema), si no usaste la autodetección, puedes ingresar manualmente las columnas y sus tipos de datos, como <code>id_producto</code> (INTEGER), <code>categoria</code> (STRING), <code>fecha_venta</code> (DATE), <code>cantidad</code> (INTEGER), y <code>precio_total</code> (FLOAT).</li>
+</ul></li>
+<li><strong>Opciones Avanzadas (Opcional)</strong>:
+<ul>
+<li>Si es necesario, puedes configurar opciones avanzadas como la fila de encabezado, caracteres delimitadores, y más. Para este ejemplo básico, las opciones predeterminadas funcionarán correctamente.</li>
+</ul></li>
+<li><strong>Crear la Tabla</strong>:
+<ul>
+<li>Haz clic en “Crear tabla” (Create table) para finalizar el proceso.</li>
+<li>BigQuery importará los datos desde el archivo <code>ventas_tienda.csv.gz</code> en Google Cloud Storage a la nueva tabla <code>ventas_tienda</code> dentro de tu conjunto de datos.</li>
+</ul></li>
+<li><strong>Verifica la Importación</strong>:
+<ul>
+<li>Una vez que la tabla esté creada, puedes hacer clic en su nombre en BigQuery para ver una muestra de los datos y asegurarte de que se importaron correctamente.</li>
+<li>Esto también te permitirá verificar que el esquema fue correctamente identificado y que los datos están listos para ser consultados.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
