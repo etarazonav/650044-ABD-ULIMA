@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="sp" xml:lang="sp"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Enver G. Tarazona Vargas   etarazon@ulima.edu.pe">
+
+<title>Actividad Práctica 2: Consultas con SQL en BigQuery</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="ABB-Actividad2-BQ_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ABB-Actividad2-BQ_files/libs/quarto-html/quarto.js"></script>
+<script src="ABB-Actividad2-BQ_files/libs/quarto-html/popper.min.js"></script>
+<script src="ABB-Actividad2-BQ_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ABB-Actividad2-BQ_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ABB-Actividad2-BQ_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ABB-Actividad2-BQ_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ABB-Actividad2-BQ_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ABB-Actividad2-BQ_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ABB-Actividad2-BQ_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Actividad Práctica 2: Consultas con SQL en BigQuery</h1>
+<p class="subtitle lead">UNIDAD 1: INTRODUCCIÓN E INFRAESTRUCTURA DE BIG DATA</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Enver G. Tarazona Vargas <br> etarazon@ulima.edu.pe </p>
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            650044 - Analítica con Big Data <br> Universidad de Lima
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="caso-de-estudio-electrosmart---optimizando-el-marketing-para-maximizar-las-ventas" class="level1">
+<h1>Caso de Estudio: ElectroSmart - Optimizando el Marketing para Maximizar las Ventas</h1>
+<p><strong>ElectroSmart</strong> es una empresa emergente en el sector del comercio electrónico, especializada en la venta de electrodomésticos y dispositivos electrónicos. Desde su fundación hace cinco años, la compañía ha experimentado un crecimiento constante, ampliando su catálogo de productos y su base de clientes en todo Perú. ElectroSmart busca ahora utilizar análisis de datos avanzados para optimizar sus estrategias de marketing y aumentar la eficiencia operativa.</p>
+<section id="contexto" class="level2">
+<h2 class="anchored" data-anchor-id="contexto">Contexto</h2>
+<p>ElectroSmart se enfrenta al desafío de utilizar eficazmente la gran cantidad de datos acumulados para mejorar su marketing y operaciones. Los datos han sido recolectados a lo largo de varios años e incluyen información detallada sobre clientes, ventas y campañas de marketing.</p>
+</section>
+<section id="objetivos-del-análisis" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-del-análisis">Objetivos del Análisis</h2>
+<ol type="1">
+<li><strong>Personalizar las campañas de marketing</strong>, mejorando la respuesta de los clientes y aumentando el retorno de inversión (ROI).</li>
+<li><strong>Identificar y capitalizar las tendencias de consumo</strong>, asegurando que los productos más demandados estén disponibles y bien posicionados.</li>
+<li><strong>Gestionar eficazmente el presupuesto de marketing</strong>, asignando recursos de manera óptima entre los diferentes canales y campañas.</li>
+<li><strong>Fomentar la lealtad del cliente</strong>, desarrollando programas de fidelización que aumenten la retención y el valor de vida del cliente (CLV).</li>
+</ol>
+</section>
+<section id="base-de-datos" class="level2">
+<h2 class="anchored" data-anchor-id="base-de-datos">Base de Datos</h2>
+<p>Para realizar este análisis, se dispondrá de las siguientes tablas principales en BigQuery:</p>
+<section id="tabla-de-clientes" class="level3">
+<h3 class="anchored" data-anchor-id="tabla-de-clientes">Tabla de Clientes</h3>
+<ul>
+<li><code>id_cliente</code>: ID único del cliente.</li>
+<li><code>fecha_registro</code>: Fecha en que el cliente se registró.</li>
+<li><code>ubicacion</code>: Ubicación geográfica del cliente en regiones de Perú como Lima, Cusco, Arequipa, y Trujillo.</li>
+<li><code>edad</code>: Edad del cliente.</li>
+<li><code>ingresos</code>: Rango de ingresos del cliente.</li>
+</ul>
+</section>
+<section id="tabla-de-productos" class="level3">
+<h3 class="anchored" data-anchor-id="tabla-de-productos">Tabla de Productos</h3>
+<ul>
+<li><code>id_producto</code>: ID único de producto.</li>
+<li><code>nombre</code>: Nombre del producto.</li>
+<li><code>categoria</code>: Categoría del producto (por ejemplo, electrodomésticos, electrónica, accesorios).</li>
+<li><code>precio</code>: Precio del producto.</li>
+<li><code>cantidad_stock</code>: Cantidad disponible en stock.</li>
+</ul>
+</section>
+<section id="tabla-de-ventas" class="level3">
+<h3 class="anchored" data-anchor-id="tabla-de-ventas">Tabla de Ventas</h3>
+<ul>
+<li><code>id_venta</code>: ID único de la venta.</li>
+<li><code>id_cliente</code>: ID del cliente que realizó la compra.</li>
+<li><code>id_producto</code>: ID del producto vendido.</li>
+<li><code>fecha</code>: Fecha de la venta.</li>
+<li><code>cantidad</code>: Cantidad de productos vendidos en esa transacción.</li>
+<li><code>precio_total</code>: Precio total de la venta.</li>
+</ul>
+</section>
+<section id="tabla-de-campañas-de-marketing" class="level3">
+<h3 class="anchored" data-anchor-id="tabla-de-campañas-de-marketing">Tabla de Campañas de Marketing</h3>
+<ul>
+<li><code>id_campaña</code>: ID único de la campaña.</li>
+<li><code>fecha_inicio</code>: Fecha de inicio de la campaña.</li>
+<li><code>fecha_fin</code>: Fecha de finalización de la campaña.</li>
+<li><code>presupuesto</code>: Presupuesto asignado a la campaña.</li>
+<li><code>canal</code>: Canal de marketing utilizado (por ejemplo, Correo electrónico, Redes sociales, Televisión, Publicidad online).</li>
+</ul>
+</section>
+</section>
+<section id="parte-1-configuración-inicial" class="level2">
+<h2 class="anchored" data-anchor-id="parte-1-configuración-inicial">Parte 1: Configuración inicial</h2>
+<ol type="1">
+<li><p>Ir al sandbox de BigQuery: <a href="https://cloud.google.com/bigquery/docs/sandbox?hl=es-419" class="uri">https://cloud.google.com/bigquery/docs/sandbox?hl=es-419</a></p></li>
+<li><p>Crear un nuevo Proyecto: TutorialBQ</p></li>
+<li><p>Crear conjunto de datos: electrosmart</p></li>
+<li><p>Crear Tablas: Crear las tablas <code>ventas</code>, <code>productos</code>, <code>clientes</code> y <code>campañas</code> a partir de los archivos <code>ElectroSmart_Ventas.csv</code>,<code>ElectroSmart_Productos.csv</code>, <code>ElectroSmart_Clientes.csv</code> y <code>ElectroSmart_Campañas_Marketing.csv</code>.</p></li>
+</ol>
+</section>
+<section id="parte-2-consultas-básicas-en-bigquery" class="level2">
+<h2 class="anchored" data-anchor-id="parte-2-consultas-básicas-en-bigquery">Parte 2: Consultas Básicas en BigQuery</h2>
+<section id="tema-1-selección-y-filtrado-de-datos" class="level3">
+<h3 class="anchored" data-anchor-id="tema-1-selección-y-filtrado-de-datos">Tema 1: Selección y Filtrado de Datos</h3>
+<p>En SQL, la selección y el filtrado de datos se realizan utilizando la declaración <code>SELECT</code>. Esta declaración permite especificar exactamente qué columnas de una tabla deseas recuperar, así como las condiciones que deben cumplir los datos que quieres ver. Esto se facilita mediante el uso de <code>WHERE</code>, que filtra registros bajo condiciones específicas, y <code>ORDER BY</code>, que permite ordenar los resultados según una o más columnas.</p>
+<p><strong>Esquema de Consulta Básica</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> columna1, columna2</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> tabla</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condición</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> columna1 <span class="kw">ASC</span>|<span class="kw">DESC</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Este esquema muestra una consulta básica que selecciona <code>columna1</code> y <code>columna2</code> de <code>tabla</code>, filtra los registros donde la condición es verdadera y luego los ordena en orden ascendente o descendente según <code>columna1</code>.</p>
+<p><strong>Ejemplo 1: Selección simple y filtrado</strong></p>
+<p>Utilizaremos la tabla <code>Clientes</code> para este ejemplo. La consulta muestra cómo seleccionar clientes de una ubicación específica y ordenar los resultados por edad.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> id_cliente, ingresos, edad</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `electrosmart.clientes`</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ubicacion <span class="op">=</span> <span class="st">'Lima'</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> edad <span class="kw">DESC</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ejercicios</strong></p>
+<ol type="1">
+<li>Selecciona los nombres de los clientes que tienen entre 30 y 40 años.</li>
+</ol>
+<p><!-- - **Solución**: --> <!--  ```sql --> <!--  SELECT id_cliente --> <!--  FROM `electrosmart.clientes` --> <!--  WHERE edad BETWEEN 30 AND 40 --> <!--  ``` --></p>
+<ol start="2" type="1">
+<li>Selecciona todos los datos de los clientes cuya ubicación sea Trujillo y tengan un ingreso bajo, ordenados por edad de manera ascendente.</li>
+</ol>
+<p><!-- - **Solución**: --> <!--  ```sql --> <!--  SELECT * --> <!--  FROM `electrosmart.clientes` --> <!--  WHERE ubicacion = 'Trujillo' AND ingresos = 'Bajo' --> <!--  ORDER BY edad ASC --> <!--  ``` --></p>
+<ol start="3" type="1">
+<li>Selecciona todos los datos de los clientes mayores de 50 años que tengan un ingreso alto, ordenados por fecha de registro de manera descendente.</li>
+</ol>
+<p><!-- - **Solución**: --> <!--  ```sql --> <!--  SELECT * --> <!--  FROM `electrosmart.clientes` --> <!--  WHERE edad > 50 AND ingresos = 'Alto' --> <!--  ORDER BY fecha_registro DESC --> <!--  ``` --></p>
+</section>
+<section id="tema-2-funciones-de-agregación" class="level3">
+<h3 class="anchored" data-anchor-id="tema-2-funciones-de-agregación">Tema 2: Funciones de Agregación</h3>
+<p>Las funciones de agregación son herramientas poderosas en SQL que permiten realizar cálculos sobre un conjunto de valores, devolviendo un único valor. Estas funciones son esenciales para realizar análisis estadísticos como promedios, sumas, máximos y mínimos. Algunas de las funciones de agregación más comunes incluyen <code>AVG()</code>, <code>SUM()</code>, <code>MAX()</code>, y <code>MIN()</code>. Estas funciones son frecuentemente usadas con <code>GROUP BY</code>, que agrupa filas que tienen los mismos valores en columnas especificadas, permitiendo realizar cálculos agregados por grupo.</p>
+<p>Ejemplo de uso de funciones de agregación</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(columna) <span class="kw">as</span> Promedio,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">MAX</span>(columna) <span class="kw">as</span> Máximo,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">MIN</span>(columna) <span class="kw">as</span> Mínimo,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">SUM</span>(columna) <span class="kw">as</span> Suma</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> tabla</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condición</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> columna_agrupadora</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Este esquema muestra una consulta que calcula el promedio, el máximo, el mínimo y la suma de <code>columna</code> en <code>tabla</code>, donde los registros cumplen una condición y luego agrupa los resultados por <code>columna_agrupadora</code></p>
+<p><strong>Ejemplo 2: Uso de funciones de agregación</strong></p>
+<p>Calcularemos la edad promedio de todos los clientes en la base de datos utilizando la tabla <code>Clientes</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(edad) <span class="kw">as</span> edad_promedio</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `electrosmart.clientes`</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ejercicios:</strong></p>
+<ol type="1">
+<li>Calcula el número total de clientes.</li>
+</ol>
+<!--    - **Solución**: -->
+<!--      ```sql -->
+<!--      SELECT COUNT(*) as total_clientes -->
+<!--      FROM `electrosmart.clientes` -->
+<!--      ``` -->
+<ol start="2" type="1">
+<li><p>Encuentra la edad máxima y mínima de los clientes.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT MAX(edad) as edad_maxima, MIN(edad) as edad_minima -->
+<!--   FROM `electrosmart.clientes` -->
+<!--   ``` --></li>
+<li><p>Calcula el total de ingresos generados por las ventas.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT SUM(precio_total) as ingresos_totales -->
+<!--   FROM `electrosmart.ventas` -->
+<!--   ``` --></li>
+</ol>
+</section>
+</section>
+<section id="parte-3-consultas-intermedias" class="level2">
+<h2 class="anchored" data-anchor-id="parte-3-consultas-intermedias">Parte 3: Consultas intermedias</h2>
+<section id="tema-3-agrupación-de-datos" class="level3">
+<h3 class="anchored" data-anchor-id="tema-3-agrupación-de-datos">Tema 3: Agrupación de Datos</h3>
+<section id="agrupación-de-datos-con-group-by" class="level4">
+<h4 class="anchored" data-anchor-id="agrupación-de-datos-con-group-by">Agrupación de Datos con <code>GROUP BY</code></h4>
+<p>La agrupación de datos en SQL se realiza utilizando la cláusula <code>GROUP BY</code>. Esta cláusula es esencial cuando se utilizan funciones de agregación para obtener resultados por grupos específicos. Permite segmentar los datos en conjuntos únicos, que pueden ser sumados, promediados o evaluados de otra manera. Por ejemplo, podría agrupar las ventas por producto o por fecha, y luego calcular totales o promedios para cada grupo.</p>
+</section>
+<section id="esquema-de-consulta-con-agrupación-de-datos" class="level4">
+<h4 class="anchored" data-anchor-id="esquema-de-consulta-con-agrupación-de-datos">Esquema de Consulta con Agrupación de Datos</h4>
+<p>La cláusula <code>GROUP BY</code> se utiliza en SQL para agrupar filas que tienen los mismos valores en columnas especificadas. Esto es especialmente útil cuando se combinan con funciones de agregación para calcular, por ejemplo, sumas o promedios para cada grupo.</p>
+<p><strong>Estructura Básica de una Consulta con <code>GROUP BY</code></strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> columna1, función_agregación(columna2)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> nombre_tabla</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condición</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> columna1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ejemplo 3: Agrupación de Datos</strong></p>
+<p>Supongamos que queremos agrupar ventas por producto y calcular el total de ventas para cada producto. La consulta sería:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> categoria, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">as</span> total_productos</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `electrosmart.productos`</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> categoria</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ejercicios: Agrupación de Datos</strong></p>
+<ol type="1">
+<li><p>Agrupa las ventas por producto y calcula el total de ventas para cada producto. <!-- - **Solución**: --> <!--   ```sql --> <!--   SELECT id_producto, SUM(precio_total) as total_ventas --> <!--   FROM `electrosmart.ventas` --> <!--   GROUP BY id_producto --> <!--   ``` --></p></li>
+<li><p>Encuentra el número promedio de ventas por cliente. <!-- - **Solución**: --> <!--   ```sql --> <!--   SELECT id_cliente, AVG(precio_total) as promedio_ventas --> <!--   FROM `electrosmart.ventas` --> <!--   GROUP BY id_cliente --> <!--   ``` --></p></li>
+<li><p>Calcula el número total de ventas y el promedio de ventas para cada categoría de producto. <!-- - **Solución**: --> <!--   ```sql --> <!--   SELECT categoría, COUNT(*) as total_ventas, AVG(precio_total) as promedio_ventas --> <!--   FROM `electrosmart.ventas` --> <!--   JOIN `electrosmart.productos` ON `electrosmart.ventas`.id_producto = `electrosmart.productos`.id_producto --> <!--   GROUP BY categoría --> <!--  ``` --></p></li>
+</ol>
+</section>
+<section id="agrupación-de-datos-con-group-by-y-having" class="level4">
+<h4 class="anchored" data-anchor-id="agrupación-de-datos-con-group-by-y-having">Agrupación de Datos con <code>GROUP BY</code> y <code>HAVING</code></h4>
+<p>La cláusula <code>GROUP BY</code> se utiliza para agrupar filas que tienen los mismos valores en columnas especificadas, lo cual es útil cuando se combinan con funciones de agregación como <code>SUM()</code>, <code>AVG()</code>, <code>MAX()</code>, y <code>MIN()</code>. La cláusula <code>HAVING</code> se utiliza para filtrar los registros que resultan de las agregaciones. Mientras que <code>WHERE</code> filtra filas antes de la agrupación, <code>HAVING</code> filtra los resultados después de agrupar los datos.</p>
+<p><strong>Esquema de Consulta con <code>GROUP BY</code> y <code>HAVING</code></strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> columna1, función_agregación(columna2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> nombre_tabla</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condición</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> columna1</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> condición_agregación</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ejemplo con <code>GROUP BY</code> y <code>HAVING</code></strong></p>
+<p>Supongamos que queremos agrupar ventas por producto y calcular el total de ventas para cada producto, pero solo queremos mostrar aquellos productos que tienen un total de ventas superior a un cierto umbral. La consulta sería:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> id_producto, <span class="fu">SUM</span>(precio_total) <span class="kw">as</span> total_ventas</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> electrosmart.ventas</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> id_producto</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">SUM</span>(precio_total) <span class="op">&gt;</span> <span class="dv">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p><code>GROUP BY id_producto</code> agrupa las ventas por cada producto. Esto es fundamental para aplicar la función de agregación al conjunto de datos resultante.</p></li>
+<li><p><code>SUM(precio_total)</code> calcula el total de ventas para cada grupo. Esta función de agregación suma todos los valores de <code>precio_total</code> dentro de cada grupo definido por <code>id_producto</code>.</p></li>
+<li><p><code>HAVING SUM(precio_total) &gt; 10000</code> filtra y muestra solo aquellos grupos cuyas ventas totales superan los 10,000. <code>HAVING</code> se utiliza aquí para aplicar un filtro sobre el resultado de la función de agregación, permitiendo que solo los grupos que cumplen esta condición sean incluidos en los resultados finales.</p></li>
+</ul>
+<p>Este enfoque permite enfocarse en productos de alto rendimiento, excluyendo aquellos que no alcanzan el umbral de ventas establecido, lo cual es útil para análisis dirigidos y decisiones estratégicas.</p>
+<p><strong>Ejercicios del Tema 3: Agrupación de Datos</strong></p>
+<ol type="1">
+<li><p>Agrupa las ventas por producto y calcula el total de ventas para cada producto. Solo muestra aquellos productos cuyas ventas totales superen los 5,000. <!-- - **Solución**: --> <!--   ```sql --> <!--   SELECT id_producto, SUM(precio_total) as total_ventas --> <!--   FROM `electrosmart.ventas` --> <!--   GROUP BY id_producto --> <!--   HAVING SUM(precio_total) > 5000 --> <!--   ``` --></p></li>
+<li><p>Encuentra el número promedio de ventas por cliente, pero solo para aquellos clientes que han gastado más de 1,000 en total.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT id_cliente, AVG(precio_total) as promedio_ventas -->
+<!--   FROM `electrosmart.ventas` -->
+<!--   GROUP BY id_cliente -->
+<!--   HAVING SUM(precio_total) > 1000 -->
+<!--   ``` --></li>
+<li><p>Calcula el total y el promedio de las ventas diarias, solo incluye los días donde el promedio de ventas supera los 200.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT DATE(fecha) as venta_dia, COUNT(*) as total_ventas, AVG(precio_total) as promedio_ventas -->
+<!--   FROM `electrosmart.ventas` -->
+<!--   GROUP BY DATE(fecha) -->
+<!--   HAVING AVG(precio_total) > 200 -->
+<!--   ``` --></li>
+<li><p>Lista todos los clientes que han realizado más de 5 compras.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--    SELECT id_cliente, COUNT(*) as numero_compras -->
+<!--    FROM `electrosmart.ventas` -->
+<!--    GROUP BY id_cliente -->
+<!--    HAVING COUNT(*) > 5 -->
+<!--   ``` --></li>
+</ol>
+</section>
+</section>
+<section id="tema-4-unión-de-tablas" class="level3">
+<h3 class="anchored" data-anchor-id="tema-4-unión-de-tablas">Tema 4: Unión de Tablas</h3>
+<p>La unión de tablas es una operación clave en SQL que permite combinar filas de dos o más tablas basadas en una columna común entre ellas. A menudo se refiere a <code>JOIN</code> en su forma más básica como <code>INNER JOIN</code>, que es uno de los varios tipos de uniones disponibles:</p>
+<ul>
+<li><code>JOIN</code> o <code>INNER JOIN</code>: Devuelve filas cuando hay una coincidencia en las columnas especificadas de ambas tablas. Si se usa <code>JOIN</code> sin un prefijo específico, generalmente se asume que es un <code>INNER JOIN</code>.</li>
+<li><code>LEFT JOIN</code> o <code>LEFT OUTER JOIN</code>: Devuelve todas las filas de la tabla izquierda y las filas coincidentes de la tabla derecha. Si no hay coincidencia, los resultados tendrán <code>NULL</code> en las columnas de la tabla derecha.</li>
+<li><code>RIGHT JOIN</code> o <code>RIGHT OUTER JOIN</code>: Es el opuesto al <code>LEFT JOIN</code>, devolviendo todas las filas de la tabla derecha y las coincidencias de la izquierda. Si no hay coincidencia, los resultados tendrán <code>NULL</code> en las columnas de la tabla izquierda.</li>
+<li><code>FULL OUTER JOIN</code>: Combina los resultados de <code>LEFT JOIN</code> y <code>RIGHT JOIN</code>. Devuelve filas cuando hay una coincidencia en una de las tablas y también filas con <code>NULL</code> en las columnas de la tabla donde no hay coincidencias.</li>
+</ul>
+<p>Estos diferentes tipos de uniones permiten a los analistas elegir cómo manejar los casos donde puede o no haber correspondencias entre las tablas, lo cual es crucial para la integridad del análisis y la presentación de datos completos y contextuales.</p>
+<p><strong>Ejemplo Práctico con <code>INNER JOIN</code></strong></p>
+<p>Para comprender mejor cómo los productos son adquiridos por diferentes clientes, podemos obtener una lista de todos los clientes junto con los detalles de sus compras. Esto se logra mediante un <code>INNER JOIN</code>, que combina las filas de las tablas <code>clientes</code> y <code>ventas</code> basándose en una columna común. Supongamos que queremos ver los clientes con las cantidades de productos comprados y los montos totales. La consulta podría ser:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.id_cliente, V.id_producto, V.cantidad, V.precio_total</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `electrosmart.clientes` C</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> `electrosmart.ventas` V <span class="kw">ON</span> C.id_cliente <span class="op">=</span> V.id_cliente</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Supongamos ahora que quisiéramos mostrar en vez del código del producto el nombre. Esto implicaría realizar una unión más con la tabla <code>producto</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.id_cliente, P.nombre <span class="kw">AS</span> nombre_producto, V.cantidad, V.precio_total</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `electrosmart.clientes` C</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> `electrosmart.ventas` V <span class="kw">ON</span> C.id_cliente <span class="op">=</span> V.id_cliente</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> `electrosmart.productos` P <span class="kw">ON</span> V.id_producto <span class="op">=</span> P.id_producto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ejercicios del Tema 4: Unión de Tablas</strong></p>
+<ol type="1">
+<li><p>Encuentra el ID del cliente junto con el total de unidades compradas y el total gastado, agrupados por cliente.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT C.id_cliente, SUM(V.cantidad) AS total_unidades, SUM(V.precio_total) AS total_gastado -->
+<!--   FROM `electrosmart.clientes` C -->
+<!--   INNER JOIN `electrosmart.ventas` V ON C.id_cliente = V.id_cliente -->
+<!--   GROUP BY C.id_cliente -->
+<!--   ``` --></li>
+<li><p>Lista todos los productos comprados por cada cliente junto con el total gastado por cada producto, solo para aquellos clientes que han gastado más de 500 en total.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT C.id_cliente, V.id_producto, SUM(V.precio_total) AS total_gastado -->
+<!--   FROM `electrosmart.clientes` C -->
+<!--   INNER JOIN `electrosmart.ventas` V ON C.id_cliente = V.id_cliente -->
+<!--   GROUP BY C.id_cliente, V.id_producto -->
+<!--   HAVING SUM(V.precio_total) > 500 -->
+<!--   ``` --></li>
+<li><p>Determina cuántos clientes han comprado cada producto y el total de ingresos generados por cada producto, pero solo para productos que generaron más de 1,000 en total.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT V.id_producto, COUNT(DISTINCT C.id_cliente) AS total_clientes, SUM(V.precio_total) AS ingresos_totales -->
+<!--   FROM `electrosmart.ventas` V -->
+<!--   INNER JOIN `electrosmart.clientes` C ON V.id_cliente = C.id_cliente -->
+<!--   GROUP BY V.id_producto -->
+<!--   HAVING SUM(V.precio_total) > 1000 -->
+<!--   ``` --></li>
+<li><p>Encuentra el total de compras y el número de productos comprados por cada cliente.</p>
+<!-- - **Solución**:      -->
+<!--   ```sql -->
+<!--   SELECT C.id_cliente, COUNT(DISTINCT V.id_producto) AS numero_productos, SUM(V.precio_total) AS total_compras -->
+<!--   FROM `electrosmart.clientes` C -->
+<!--   INNER JOIN `electrosmart.ventas` V ON C.id_cliente = V.id_cliente -->
+<!--   GROUP BY C.id_cliente -->
+<!--   ``` --></li>
+</ol>
+</section>
+</section>
+<section id="parte-4-consultas-avanzadas" class="level2">
+<h2 class="anchored" data-anchor-id="parte-4-consultas-avanzadas">Parte 4: Consultas Avanzadas</h2>
+<section id="tema-5-subconsultas-y-consultas-anidadas" class="level3">
+<h3 class="anchored" data-anchor-id="tema-5-subconsultas-y-consultas-anidadas">Tema 5: Subconsultas y Consultas Anidadas</h3>
+<p>Las subconsultas y consultas anidadas permiten realizar operaciones más complejas dentro de una consulta SQL. Estas técnicas son cruciales para situaciones donde la ejecución de una consulta depende de los resultados de otra. Las subconsultas pueden aparecer en las cláusulas <code>SELECT</code>, <code>FROM</code>, o <code>WHERE</code>:</p>
+<ul>
+<li><strong>Subconsultas en <code>SELECT</code></strong>: Permiten realizar cálculos dinámicos sobre los datos seleccionados.</li>
+<li><strong>Subconsultas en <code>FROM</code></strong>: Se utilizan para tratar el resultado de una consulta como si fuera una tabla temporal.</li>
+<li><strong>Subconsultas en <code>WHERE</code></strong>: Ayudan a filtrar datos basados en un criterio que depende de otra consulta.</li>
+</ul>
+<p><strong>Ejemplo Práctico con Subconsulta en <code>WHERE</code></strong></p>
+<p>Supongamos que queremos identificar los clientes que han gastado más que el promedio de gasto de todos los clientes. Para lograr esto, debemos calcular el promedio de gasto dentro de una subconsulta y luego usar este resultado en la cláusula <code>WHERE</code> de la consulta principal. Aquí está cómo podemos estructurar la consulta:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> id_cliente, total_gastado</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> id_cliente, <span class="fu">SUM</span>(precio_total) <span class="kw">AS</span> total_gastado</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> electrosmart.ventas</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span> id_cliente</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> gastos</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> total_gastado <span class="op">&gt;</span> (</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="fu">AVG</span>(total_gastado) <span class="kw">FROM</span> (</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">SELECT</span> id_cliente, <span class="fu">SUM</span>(precio_total) <span class="kw">AS</span> total_gastado</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">FROM</span> electrosmart.ventas</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">GROUP</span> <span class="kw">BY</span> id_cliente</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> promedios</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>En este ejemplo, utilizamos subconsultas para identificar a los clientes que han gastado más que el promedio de gasto de todos los clientes. La consulta se estructura de la siguiente manera:</p>
+<ol type="1">
+<li><p><strong>Subconsulta Interna en <code>FROM</code></strong>: Esta subconsulta crea una tabla temporal llamada <code>gastos</code> que contiene el <code>id_cliente</code> y el <code>total_gastado</code> por cada cliente. Esto se logra agrupando los datos de ventas por <code>id_cliente</code> y sumando el <code>precio_total</code> para cada grupo.</p></li>
+<li><p><strong>Subconsulta en <code>WHERE</code> para calcular el promedio</strong>: Aquí, calculamos el promedio de gasto de todos los clientes. Esta subconsulta opera sobre la tabla temporal <code>gastos</code>, sumando el <code>total_gastado</code> de todos los clientes y luego calculando el promedio.</p></li>
+<li><p><strong>Consulta Principal</strong>: En la consulta principal, seleccionamos los clientes cuyo <code>total_gastado</code> supera el promedio calculado. Esto se logra comparando el <code>total_gastado</code> de cada cliente en la tabla <code>gastos</code> con el promedio obtenido de la subconsulta.</p></li>
+</ol>
+<p>Este enfoque permite realizar comparaciones dinámicas dentro de una base de datos, facilitando análisis detallados basados en comportamientos agregados de los usuarios o clientes. Al usar subconsultas, garantizamos que todos los cálculos necesarios para el filtro se realizan antes de producir el resultado final, asegurando eficiencia y precisión en la consulta.</p>
+<p><strong>Ejercicios del Tema 5: Subconsultas y Consultas Anidadas</strong></p>
+<ol type="1">
+<li><p>Encuentra los clientes que han gastado más en un solo pedido que el promedio de gastos de todos los pedidos.</p>
+<!-- - **Solución**: -->
+<!--   ```sql -->
+<!--   SELECT id_cliente, MAX(precio_total) AS max_gasto -->
+<!--   FROM electrosmart.ventas -->
+<!--   GROUP BY id_cliente -->
+<!--   HAVING MAX(precio_total) > ( -->
+<!--       SELECT AVG(precio_total) FROM electrosmart.ventas -->
+<!--   ) -->
+<!--   ``` --></li>
+<li><p>Lista los productos que han sido comprados en una cantidad total que supera el promedio de cantidad vendida por producto.</p></li>
+</ol>
+<!--    - **Solución**: -->
+<!--      ```sql -->
+<!--      SELECT id_producto, SUM(cantidad) AS total_vendida -->
+<!--      FROM electrosmart.ventas -->
+<!--      GROUP BY id_producto -->
+<!--      HAVING SUM(cantidad) > ( -->
+<!--          SELECT AVG(total_vendida) FROM ( -->
+<!--              SELECT SUM(cantidad) AS total_vendida -->
+<!--              FROM electrosmart.ventas -->
+<!--              GROUP BY id_producto -->
+<!--          ) AS promedios -->
+<!--      ) -->
+<!--      ``` -->
+<ol start="3" type="1">
+<li>Determina los días en los que el total de ventas fue superior al promedio diario de ventas.</li>
+</ol>
+<!--    - **Solución**: -->
+<!--      ```sql -->
+<!--      SELECT fecha, SUM(precio_total) AS total_ventas -->
+<!--      FROM electrosmart.ventas -->
+<!--      GROUP BY fecha -->
+<!--      HAVING SUM(precio_total) > ( -->
+<!--          SELECT AVG(total_ventas) FROM ( -->
+<!--              SELECT fecha, SUM(precio_total) AS total_ventas -->
+<!--              FROM electrosmart.ventas -->
+<!--              GROUP BY fecha -->
+<!--          ) AS ventas_diarias -->
+<!--      ) -->
+<!--      ``` -->
+</section>
+<section id="referencias" class="level3">
+<h3 class="anchored" data-anchor-id="referencias">Referencias</h3>
+<pre><code>- Teate, R. M. P. (2021). *SQL for Data Scientists: A Beginner’s Guide for Building Datasets for Analysis*. Wiley.
+
+- Beaulieu, A. (2019). *Learning SQL: Generate, Manipulate, and Retrieve Data* (3rd ed.). O'Reilly Media.
+
+- Molinaro, A. (2009). *SQL Cookbook: Query Solutions and Techniques for Database Developers* (2nd ed.). O'Reilly Media.
+
+-  Forta, B. (2020). *SQL in 10 Minutes, Sams Teach Yourself* (5th ed.). Sams Publishing.
+
+- Silberschatz, A., Korth, H. F., &amp; Sudarshan, S. (2020). *Database System Concepts* (7th ed.). McGraw-Hill Education.
+
+- Faroult, S., &amp; Robson, P. (2006). *The Art of SQL*. O'Reilly Media.
+
+- Korotkevitch, D. (2019). *Pro SQL Server Internals* (2nd ed.). Apress.</code></pre>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
