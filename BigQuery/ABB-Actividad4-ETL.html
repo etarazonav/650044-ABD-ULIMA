@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="sp" xml:lang="sp"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Enver G. Tarazona Vargas   etarazon@ulima.edu.pe">
+
+<title>Actividad Práctica 4: Proceso ETL y Flujos de Datos en Google Cloud Platform (GCP) - Parte II</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="ABB-Actividad4-ETL_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ABB-Actividad4-ETL_files/libs/quarto-html/quarto.js"></script>
+<script src="ABB-Actividad4-ETL_files/libs/quarto-html/popper.min.js"></script>
+<script src="ABB-Actividad4-ETL_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ABB-Actividad4-ETL_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ABB-Actividad4-ETL_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ABB-Actividad4-ETL_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ABB-Actividad4-ETL_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ABB-Actividad4-ETL_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ABB-Actividad4-ETL_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Actividad Práctica 4: Proceso ETL y Flujos de Datos en Google Cloud Platform (GCP) - Parte II</h1>
+<p class="subtitle lead">UNIDAD 1: INTRODUCCIÓN E INFRAESTRUCTURA DE BIG DATA</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Enver G. Tarazona Vargas <br> etarazon@ulima.edu.pe </p>
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            650044 - Analítica con Big Data <br> Universidad de Lima
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="parte-2-procesamiento-de-datos-en-tiempo-real-streaming" class="level2">
+<h2 class="anchored" data-anchor-id="parte-2-procesamiento-de-datos-en-tiempo-real-streaming"><strong>Parte 2: Procesamiento de Datos en Tiempo Real (Streaming)</strong></h2>
+<section id="objetivo" class="level3">
+<h3 class="anchored" data-anchor-id="objetivo"><strong>Objetivo:</strong></h3>
+<p>El objetivo de esta parte del tutorial es implementar un flujo ETL en tiempo real usando <strong>Google Cloud Pub/Sub</strong> y <strong>Google Cloud Dataflow</strong>. A diferencia de la Parte 1, donde trabajamos con datos históricos, aquí vamos a capturar y procesar eventos de ventas en tiempo real, lo que permitirá que las transacciones se reflejen de inmediato en la base de datos, proporcionando información en tiempo real a la cadena de tiendas.</p>
+<p>Al final de esta parte, habrás aprendido a:</p>
+<ul>
+<li>Capturar eventos en tiempo real usando <strong>Pub/Sub</strong>.</li>
+<li>Procesar esos eventos con <strong>Dataflow</strong>, aplicando las transformaciones necesarias para análisis.</li>
+<li>Almacenar los datos procesados en <strong>BigQuery</strong> para su consulta y análisis inmediato.</li>
+</ul>
+</section>
+<section id="contexto-del-proyecto" class="level3">
+<h3 class="anchored" data-anchor-id="contexto-del-proyecto"><strong>Contexto del Proyecto:</strong></h3>
+<p>Además del análisis de datos históricos, la cadena de tiendas minoristas quiere saber lo que ocurre en sus tiendas en tiempo real. Esto les permitirá reaccionar rápidamente a eventos imprevistos como picos de ventas, ajustando la estrategia de marketing o reabasteciendo productos que se están vendiendo rápidamente.</p>
+<p>El evento en tiempo real en este contexto es la venta de un producto. Cada vez que un cliente realiza una compra, se genera un mensaje que incluye detalles como la tienda donde ocurrió, el producto vendido, la cantidad, el precio y la fecha de la transacción. Este mensaje será enviado a <strong>Google Cloud Pub/Sub</strong>, procesado por <strong>Google Cloud Dataflow</strong>, y los datos finales se almacenarán en <strong>BigQuery</strong> para su análisis.</p>
+</section>
+<section id="ejemplo-de-un-evento-en-tiempo-real" class="level3">
+<h3 class="anchored" data-anchor-id="ejemplo-de-un-evento-en-tiempo-real"><strong>Ejemplo de un Evento en Tiempo Real:</strong></h3>
+<p>Un cliente compra un televisor en la tienda de Lima a las 3:45 p.m. El evento contiene los siguientes datos:</p>
+<ul>
+<li><strong>Fecha y hora de la venta</strong>: 2024-07-25 15:45:00</li>
+<li><strong>Tienda</strong>: Lima</li>
+<li><strong>Producto vendido</strong>: Televisor</li>
+<li><strong>Precio</strong>: 1200.00</li>
+<li><strong>Cantidad vendida</strong>: 2</li>
+</ul>
+<p>Este evento será capturado de inmediato, procesado y almacenado en <strong>BigQuery</strong> sin esperar un procesamiento batch o la finalización del día.</p>
+<hr>
+</section>
+<section id="paso-1-crear-un-tópico-en-google-cloud-pubsub" class="level3">
+<h3 class="anchored" data-anchor-id="paso-1-crear-un-tópico-en-google-cloud-pubsub"><strong>Paso 1: Crear un Tópico en Google Cloud Pub/Sub</strong></h3>
+<section id="qué-es-google-cloud-pubsub" class="level4">
+<h4 class="anchored" data-anchor-id="qué-es-google-cloud-pubsub"><strong>¿Qué es Google Cloud Pub/Sub?</strong></h4>
+<p><strong>Google Cloud Pub/Sub</strong> es un servicio de mensajería en tiempo real que sigue el modelo <strong>Publisher/Subscriber</strong> (Publicador/Suscriptor). Este modelo permite que un publicador envíe mensajes (en este caso, eventos de ventas) a un tópico, y que uno o más suscriptores reciban esos mensajes para procesarlos.</p>
+<ul>
+<li><strong>Publicador</strong>: Es el componente que genera y envía mensajes a un tópico. En este caso, cada venta generada en tiempo real será enviada por el publicador.</li>
+<li><strong>Suscriptor</strong>: Es el componente que escucha esos mensajes para procesarlos. Por ejemplo, el servicio <strong>Google Cloud Dataflow</strong> suscribirá los mensajes y los procesará.</li>
+</ul>
+</section>
+<section id="qué-es-un-tópico" class="level4">
+<h4 class="anchored" data-anchor-id="qué-es-un-tópico"><strong>¿Qué es un Tópico?</strong></h4>
+<p>Un <strong>tópico</strong> es un canal donde los mensajes son enviados por los publicadores. Todos los mensajes relacionados con un evento o un tipo de dato (como ventas en tiempo real) se publican en ese canal, y uno o más suscriptores pueden recibir esos mensajes para procesarlos.</p>
+<ul>
+<li><strong>En resumen</strong>:
+<ul>
+<li><strong>Pub/Sub</strong> gestiona la publicación y suscripción de mensajes en tiempo real.</li>
+<li>Un <strong>tópico</strong> actúa como intermediario entre el publicador (que envía el mensaje) y los suscriptores (que procesan el mensaje).</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="instrucciones-para-crear-un-tópico-en-google-cloud-pubsub" class="level4">
+<h4 class="anchored" data-anchor-id="instrucciones-para-crear-un-tópico-en-google-cloud-pubsub"><strong>Instrucciones para Crear un Tópico en Google Cloud Pub/Sub:</strong></h4>
+<ol type="1">
+<li><strong>Acceder a Google Cloud Pub/Sub</strong>:
+<ul>
+<li>En el menú lateral de Google Cloud Console, selecciona <strong>Pub/Sub</strong> y luego <strong>Temas</strong>.</li>
+</ul></li>
+<li><strong>Crear un Tópico</strong>:
+<ul>
+<li>Haz clic en “Crear Tópico” para abrir la página de configuración de un nuevo tópico.</li>
+</ul></li>
+<li><strong>Configurar el Tópico</strong>:
+<ul>
+<li><strong>ID del Tópico</strong>: Escribe <code>ventas_en_tiempo_real</code>.</li>
+<li><strong>Agregar una suscripción predeterminada</strong>: Deja esta opción marcada. Esto creará automáticamente una suscripción al tópico.</li>
+<li><strong>Encriptación</strong>: Deja la opción predeterminada: <strong>Clave de encriptación administrada por Google</strong>.</li>
+<li><strong>No habilitar las otras opciones</strong> por ahora (Esquema, Transferencia, Retención de mensajes, etc.), ya que no son necesarias para este flujo específico.</li>
+</ul></li>
+<li><strong>Crear el Tópico</strong>:
+<ul>
+<li>Una vez que hayas configurado el nombre y revisado las opciones, haz clic en <strong>Crear</strong>.</li>
+</ul></li>
+</ol>
+<p>Con esto, habrás creado el tópico llamado <code>ventas_en_tiempo_real</code> que recibirá los eventos de ventas en tiempo real.</p>
+<hr>
+</section>
+</section>
+<section id="paso-2-crear-la-tabla-en-bigquery" class="level3">
+<h3 class="anchored" data-anchor-id="paso-2-crear-la-tabla-en-bigquery"><strong>Paso 2: Crear la Tabla en BigQuery</strong></h3>
+<p>Para poder almacenar los datos procesados en tiempo real, primero necesitamos crear la tabla en <strong>BigQuery</strong>.</p>
+<section id="instrucciones" class="level4">
+<h4 class="anchored" data-anchor-id="instrucciones">Instrucciones:</h4>
+<ol type="1">
+<li><strong>Acceder a BigQuery:</strong>
+<ul>
+<li>En el menú lateral izquierdo de Google Cloud Console, selecciona <strong>BigQuery</strong>.</li>
+</ul></li>
+<li><strong>Crear un Conjunto de Datos:</strong>
+<ul>
+<li>Si aún no lo has hecho, crea un conjunto de datos llamado <code>ventas_procesadas</code>.
+<ul>
+<li>Haz clic en <strong>+ Crear Conjunto de Datos</strong>.</li>
+<li>Asigna un ID de conjunto de datos, por ejemplo: <code>ventas_procesadas</code>.</li>
+<li>Configura la localización de los datos, por ejemplo <code>us-central1</code>.</li>
+<li>Haz clic en <strong>Crear</strong>.</li>
+</ul></li>
+</ul></li>
+<li><strong>Crear una Tabla en el Conjunto de Datos:</strong>
+<ul>
+<li>En el panel de BigQuery, selecciona el conjunto de datos <code>ventas_procesadas</code>.</li>
+<li>Haz clic en <strong>+ Crear Tabla</strong>.
+<ul>
+<li><p><strong>Origen de Datos:</strong> Selecciona “Crear tabla vacía”.</p></li>
+<li><p><strong>Nombre de la tabla:</strong> <code>ventas_en_tiempo_real</code>.</p></li>
+<li><p><strong>Esquema de la tabla:</strong></p>
+<p>A continuación, pega este esquema de la tabla:</p></li>
+</ul></li>
+</ul></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"fecha"</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"STRING"</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"mode"</span><span class="fu">:</span> <span class="st">"NULLABLE"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"tienda"</span><span class="fu">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"STRING"</span><span class="fu">,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"mode"</span><span class="fu">:</span> <span class="st">"NULLABLE"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"producto"</span><span class="fu">,</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"STRING"</span><span class="fu">,</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"mode"</span><span class="fu">:</span> <span class="st">"NULLABLE"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"cantidad_vendida"</span><span class="fu">,</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"INTEGER"</span><span class="fu">,</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"mode"</span><span class="fu">:</span> <span class="st">"NULLABLE"</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"precio_unitario"</span><span class="fu">,</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"FLOAT"</span><span class="fu">,</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"mode"</span><span class="fu">:</span> <span class="st">"NULLABLE"</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="4" type="1">
+<li><strong>Crear la Tabla:</strong>
+<ul>
+<li>Haz clic en <strong>Crear</strong> y la tabla estará lista para recibir los datos procesados en tiempo real desde <strong>Google Cloud Dataflow</strong>.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="paso-3-crear-un-pipeline-en-google-cloud-dataflow-para-procesar-los-datos-en-tiempo-real" class="level3">
+<h3 class="anchored" data-anchor-id="paso-3-crear-un-pipeline-en-google-cloud-dataflow-para-procesar-los-datos-en-tiempo-real"><strong>Paso 3: Crear un Pipeline en Google Cloud Dataflow para Procesar los Datos en Tiempo Real</strong></h3>
+<section id="qué-es-google-cloud-dataflow" class="level4">
+<h4 class="anchored" data-anchor-id="qué-es-google-cloud-dataflow"><strong>¿Qué es Google Cloud Dataflow?</strong></h4>
+<p><strong>Google Cloud Dataflow</strong> es un servicio de procesamiento de datos en tiempo real (streaming) y por lotes (batch). Se basa en Apache Beam, una plataforma de código abierto que permite definir pipelines (flujos de datos) que transforman, analizan y almacenan datos. En este tutorial, utilizaremos <strong>Dataflow</strong> para procesar los eventos de ventas en tiempo real que llegan desde el tópico de <strong>Pub/Sub</strong> y almacenarlos en <strong>BigQuery</strong>.</p>
+<ul>
+<li><strong>Pipeline</strong>: Un pipeline es un conjunto de etapas o pasos donde se aplican transformaciones a los datos a medida que fluyen. En este caso, nuestro pipeline tomará los eventos de ventas desde <strong>Pub/Sub</strong>, los procesará y los insertará en <strong>BigQuery</strong>.</li>
+</ul>
+</section>
+<section id="objetivo-del-paso-3" class="level4">
+<h4 class="anchored" data-anchor-id="objetivo-del-paso-3"><strong>Objetivo del Paso 3:</strong></h4>
+<p>En este paso, configuraremos un pipeline en <strong>Google Cloud Dataflow</strong> que capture los mensajes publicados en el tópico de <strong>Pub/Sub</strong>, los procese y los almacene en <strong>BigQuery</strong> en tiempo real. Así, cada venta que se registre en una tienda se reflejará automáticamente en la base de datos sin intervención manual.</p>
+<hr>
+</section>
+<section id="instrucciones-para-crear-un-pipeline-en-dataflow" class="level4">
+<h4 class="anchored" data-anchor-id="instrucciones-para-crear-un-pipeline-en-dataflow"><strong>Instrucciones para Crear un Pipeline en Dataflow:</strong></h4>
+<ol type="1">
+<li><strong>Ir a Google Cloud Dataflow</strong>:
+<ul>
+<li>En el menú lateral izquierdo, selecciona <strong>Dataflow</strong>.</li>
+</ul></li>
+<li><strong>Crear un Trabajo</strong>:
+<ul>
+<li>Haz clic en <strong>Crear trabajo</strong> (quizá requiera activar la API).</li>
+<li><strong>Nombre del trabajo</strong>: Ingresa un nombre para el trabajo siguiendo las reglas: solo letras minúsculas (<code>a-z</code>), números (<code>0-9</code>), y guiones (<code>-</code>). Debe comenzar con una letra y terminar con una letra o un número.
+<ul>
+<li>Ejemplo: <code>procesar-ventas-tiempo-real-1</code>.</li>
+</ul></li>
+</ul></li>
+<li><strong>Configurar el Trabajo</strong>:
+<ul>
+<li><strong>Extremo regional</strong>: Selecciona la región donde quieras ejecutar el trabajo, por ejemplo, <code>us-central1</code>.</li>
+<li><strong>Plantilla de Dataflow</strong>: Selecciona la plantilla <strong>Pub/Sub to BigQuery</strong>.</li>
+</ul></li>
+<li><strong>Target (BigQuery output table)</strong>:
+<ul>
+<li>Haz clic en <strong>Explorar</strong> y selecciona la tabla de BigQuery que creaste en pasos anteriores (<code>ventas_procesadas</code> en el dataset <code>tu_proyecto</code>).</li>
+</ul></li>
+<li><strong>Modo de transmisión</strong>:
+<ul>
+<li>Selecciona la opción <strong>Exactamente una vez</strong> para asegurar que no haya duplicación de datos.</li>
+</ul></li>
+<li><strong>Opciones del Streaming Engine</strong>:
+<ul>
+<li>Recomendación: Puedes <strong>habilitar el Streaming Engine</strong> para mejorar el rendimiento del pipeline y manejar grandes volúmenes de datos en tiempo real. Sin embargo, esta opción puede tener un costo adicional. Si decides no habilitarlo, el trabajo igual funcionará correctamente, pero puede tener menor rendimiento.</li>
+</ul></li>
+<li><strong>Input Pub/Sub topic</strong>:
+<ul>
+<li>Selecciona el <strong>tópico de Pub/Sub</strong> creado en el paso anterior (<code>ventas_en_tiempo_real</code>).</li>
+</ul></li>
+<li><strong>Subscrición de entrada de Pub/Sub</strong>:
+<ul>
+<li>Selecciona la suscripción predeterminada asociada al tópico.</li>
+</ul></li>
+<li><strong>BigQuery Storage Write API</strong>:
+<ul>
+<li>Deja esta opción deshabilitada si no necesitas usar la API de escritura directa a BigQuery. El pipeline funcionará sin esta opción activada, pero activarla puede mejorar la latencia de los datos escritos en BigQuery.</li>
+</ul></li>
+<li><strong>Crear el Trabajo</strong>:</li>
+</ol>
+<ul>
+<li>Haz clic en <strong>Crear</strong> para iniciar el pipeline.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="paso-4-publicar-un-evento-simulado-y-verificar-los-resultados-en-bigquery" class="level3">
+<h3 class="anchored" data-anchor-id="paso-4-publicar-un-evento-simulado-y-verificar-los-resultados-en-bigquery"><strong>Paso 4: Publicar un Evento Simulado y Verificar los Resultados en BigQuery</strong></h3>
+<p>En este paso, publicaremos un mensaje que simula un evento de venta en tiempo real para verificar que el pipeline de <strong>Dataflow</strong> funcione correctamente y procese los datos de manera automática.</p>
+<section id="cómo-se-generaría-un-evento-de-venta-en-la-vida-real" class="level4">
+<h4 class="anchored" data-anchor-id="cómo-se-generaría-un-evento-de-venta-en-la-vida-real"><strong>¿Cómo se generaría un evento de venta en la vida real?</strong></h4>
+<p>En un entorno real, el evento de venta sería generado automáticamente cada vez que un cliente realiza una compra en una tienda física o en línea. Cuando la transacción se completa, el sistema de punto de venta (POS) o la plataforma de comercio electrónico envía un mensaje al <strong>tópico de Pub/Sub</strong>, conteniendo todos los detalles de la venta: la fecha, el nombre del producto, el precio, la cantidad vendida, y la tienda donde ocurrió la transacción.</p>
+<p>Por ejemplo, si una tienda en Lima vende un televisor por S/. 1200.00, el sistema POS generaría un mensaje en tiempo real con esa información, y lo enviaría a Pub/Sub, para que luego sea procesado y almacenado en <strong>BigQuery</strong> a través de <strong>Dataflow</strong>.</p>
+<p>A continuación, simularemos este comportamiento publicando manualmente un mensaje en Pub/Sub.</p>
+<hr>
+</section>
+<section id="instrucciones-para-simular-un-evento-de-venta-y-publicar-un-mensaje-en-el-tópico" class="level4">
+<h4 class="anchored" data-anchor-id="instrucciones-para-simular-un-evento-de-venta-y-publicar-un-mensaje-en-el-tópico"><strong>Instrucciones para Simular un Evento de Venta y Publicar un Mensaje en el Tópico</strong></h4>
+<ol type="1">
+<li><strong>Ir al tópico de Pub/Sub</strong>:
+<ul>
+<li>Desde la consola de <strong>Google Cloud</strong>, navega a <strong>Pub/Sub</strong> y selecciona el tópico que creaste, en este caso <code>ventas_en_tiempo_real</code>.</li>
+</ul></li>
+<li><strong>Publicar un mensaje en el tópico</strong>:
+<ul>
+<li>En la barra lateral derecha de la página del tópico, haz clic en <strong>Publicar mensaje en un tema</strong>.</li>
+</ul></li>
+<li><strong>Escribir el mensaje</strong>:
+<ul>
+<li><p>En el cuadro de diálogo que aparece, escribe un mensaje con el siguiente formato JSON, que simula una venta de un televisor:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"fecha"</span><span class="fu">:</span> <span class="st">"2024-09-12T15:45:00"</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"tienda"</span><span class="fu">:</span> <span class="st">"Lima"</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"producto"</span><span class="fu">:</span> <span class="st">"Televisor"</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"cantidad_vendida"</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"precio_unitario"</span><span class="fu">:</span> <span class="fl">1200.00</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+<li><strong>Publicar el mensaje</strong>:
+<ul>
+<li>Haz clic en <strong>Publicar</strong> para enviar el mensaje al tópico.</li>
+</ul></li>
+<li><strong>Verificar el procesamiento en Dataflow</strong>:
+<ul>
+<li>Ve al job de <strong>Dataflow</strong> para asegurarte de que se esté ejecutando correctamente y que el mensaje se esté procesando sin errores.</li>
+</ul></li>
+<li><strong>Verificar los resultados en BigQuery</strong>:
+<ul>
+<li>Accede a <strong>BigQuery</strong> y revisa la tabla en la que configuraste el pipeline para asegurarte de que los datos de la venta simulada aparezcan en la tabla <code>ventas_procesadas</code>.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+</section>
+<section id="parte-3-monitorización-y-optimización-del-flujo-etl-en-tiempo-real" class="level2">
+<h2 class="anchored" data-anchor-id="parte-3-monitorización-y-optimización-del-flujo-etl-en-tiempo-real"><strong>Parte 3: Monitorización y Optimización del Flujo ETL en Tiempo Real</strong></h2>
+<section id="objetivo-1" class="level4">
+<h4 class="anchored" data-anchor-id="objetivo-1"><strong>Objetivo:</strong></h4>
+<p>El objetivo de esta parte es aprender a <strong>monitorear, optimizar y asegurar el correcto funcionamiento</strong> de un flujo ETL en tiempo real implementado en <strong>Google Cloud Platform (GCP)</strong>. En esta etapa, aprenderás a usar herramientas de Google Cloud para supervisar el rendimiento del pipeline y optimizarlo para mejorar la eficiencia en el procesamiento de datos. Además, veremos cómo manejar errores y fallos en la transmisión de datos.</p>
+<p>Al final de esta parte, habrás aprendido a:</p>
+<ol type="1">
+<li>Monitorear el pipeline de <strong>Dataflow</strong> en tiempo real.</li>
+<li>Optimizar el rendimiento del pipeline ajustando parámetros clave.</li>
+<li>Detectar y manejar errores en <strong>Pub/Sub</strong>, <strong>Dataflow</strong>, y <strong>BigQuery</strong>.</li>
+<li>Aplicar estrategias de escalado para pipelines con grandes volúmenes de datos.</li>
+</ol>
+<hr>
+</section>
+<section id="paso-1-monitoreo-del-pipeline-de-dataflow" class="level3">
+<h3 class="anchored" data-anchor-id="paso-1-monitoreo-del-pipeline-de-dataflow"><strong>Paso 1: Monitoreo del Pipeline de Dataflow</strong></h3>
+<p>Google Cloud <strong>Dataflow</strong> proporciona herramientas integradas para monitorear el rendimiento y la salud de los pipelines en tiempo real. En esta sección, aprenderás a usar la consola de <strong>Dataflow</strong> para verificar el estado del pipeline y detectar posibles cuellos de botella o fallos.</p>
+<section id="instrucciones-1" class="level4">
+<h4 class="anchored" data-anchor-id="instrucciones-1"><strong>Instrucciones</strong>:</h4>
+<ol type="1">
+<li><strong>Acceder al panel de Dataflow</strong>:
+<ul>
+<li>En la consola de <strong>Google Cloud</strong>, navega a <strong>Dataflow</strong>.</li>
+<li>Selecciona el job en ejecución que configuraste en la Parte 2, como <code>procesar_ventas_en_tiempo_real</code>.</li>
+</ul></li>
+<li><strong>Revisar el estado del job</strong>:
+<ul>
+<li>En la página del job, puedes ver un gráfico de la topología del pipeline (similar al que viste anteriormente).</li>
+<li>Los nodos del gráfico te mostrarán si hay algún error o si las etapas del pipeline están funcionando correctamente.</li>
+</ul></li>
+<li><strong>Monitorear las métricas del pipeline</strong>:
+<ul>
+<li>Haz clic en <strong>Métricas</strong> para revisar el rendimiento detallado del pipeline.</li>
+<li>Aquí podrás ver información sobre la latencia, el throughput (procesamiento por segundo), y el número de mensajes procesados.</li>
+<li>Revisa si hay métricas que indiquen cuellos de botella, como tiempos de espera elevados o baja eficiencia en la inserción de registros en <strong>BigQuery</strong>.</li>
+</ul></li>
+<li><strong>Verificar errores</strong>:
+<ul>
+<li>Si alguna parte del pipeline falla, Dataflow te mostrará detalles de los errores que ocurren.</li>
+<li>Puedes hacer clic en cada nodo del gráfico para ver los registros de errores y las razones de fallos en la inserción de datos o en la transformación de los mensajes.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="paso-2-manejo-de-errores-en-pubsub-y-bigquery" class="level3">
+<h3 class="anchored" data-anchor-id="paso-2-manejo-de-errores-en-pubsub-y-bigquery"><strong>Paso 2: Manejo de Errores en Pub/Sub y BigQuery</strong></h3>
+<p>Durante la transmisión de datos en tiempo real, es posible que ocurran errores como la pérdida de mensajes o fallos en la escritura de datos en <strong>BigQuery</strong>. En esta sección, aprenderás a manejar estos errores y a asegurarte de que los datos lleguen de manera confiable al destino.</p>
+<section id="instrucciones-2" class="level4">
+<h4 class="anchored" data-anchor-id="instrucciones-2"><strong>Instrucciones</strong>:</h4>
+<ol type="1">
+<li><strong>Errores en Pub/Sub</strong>:
+<ul>
+<li>En la consola de <strong>Pub/Sub</strong>, navega al tópico <code>ventas_en_tiempo_real</code>.</li>
+<li>Revisa la pestaña de <strong>Métricas</strong> para monitorear el número de mensajes publicados y si hay mensajes que no se han entregado a <strong>Dataflow</strong>.</li>
+<li>Si encuentras mensajes no entregados, revisa la suscripción de <strong>Pub/Sub</strong> para asegurarte de que está activa y configurada correctamente.</li>
+</ul></li>
+<li><strong>Errores en BigQuery</strong>:
+<ul>
+<li>En <strong>Dataflow</strong>, si los datos no se están insertando correctamente en <strong>BigQuery</strong>, verifica el esquema de la tabla y las métricas de inserción.</li>
+<li>Puedes habilitar una tabla de <strong>“Dead Letter”</strong> (tablas donde se almacenan los mensajes fallidos) en la configuración del job de <strong>Dataflow</strong> para capturar los datos que no pudieron ser procesados correctamente.</li>
+<li>Esta tabla te permitirá inspeccionar manualmente los mensajes que fallaron, identificar el error, corregir los datos y reinsertarlos en el flujo.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="paso-3-optimización-del-rendimiento-del-pipeline" class="level3">
+<h3 class="anchored" data-anchor-id="paso-3-optimización-del-rendimiento-del-pipeline"><strong>Paso 3: Optimización del Rendimiento del Pipeline</strong></h3>
+<p>Cuando trabajas con grandes volúmenes de datos en tiempo real, es importante optimizar el pipeline para maximizar la eficiencia y minimizar el tiempo de procesamiento. En esta sección, aprenderás a ajustar configuraciones para mejorar el rendimiento del pipeline de <strong>Dataflow</strong>.</p>
+<section id="opciones-de-optimización" class="level4">
+<h4 class="anchored" data-anchor-id="opciones-de-optimización"><strong>Opciones de Optimización</strong>:</h4>
+<ol type="1">
+<li><strong>Escalado automático</strong>:
+<ul>
+<li><strong>Dataflow</strong> soporta escalado automático, lo que significa que puede incrementar o reducir los recursos disponibles según el volumen de datos procesado. Asegúrate de que esta opción esté habilitada para permitir que el pipeline se ajuste dinámicamente a las cargas de trabajo.</li>
+</ul></li>
+<li><strong>Habilitar el “Streaming Engine”</strong>:
+<ul>
+<li>En la configuración del job de <strong>Dataflow</strong>, puedes habilitar la opción de <strong>Streaming Engine</strong>, que mejora la eficiencia en el procesamiento de datos en tiempo real. Esto es útil para flujos de datos continuos y grandes volúmenes de eventos.</li>
+<li>Ten en cuenta que habilitar esta opción puede incrementar el costo del job, pero mejora el rendimiento.</li>
+</ul></li>
+<li><strong>Optimización de la inserción de datos en BigQuery</strong>:
+<ul>
+<li>Asegúrate de que la inserción de datos en <strong>BigQuery</strong> esté optimizada para manejar grandes volúmenes de mensajes.</li>
+<li>Puedes utilizar el API de escritura en <strong>BigQuery</strong> para mejorar la eficiencia en la inserción de datos, lo que reducirá los tiempos de latencia y mejorará la consistencia.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="paso-4-escalado-y-ajuste-de-costos" class="level3">
+<h3 class="anchored" data-anchor-id="paso-4-escalado-y-ajuste-de-costos"><strong>Paso 4: Escalado y Ajuste de Costos</strong></h3>
+<p>El procesamiento de grandes volúmenes de datos en tiempo real puede generar un costo significativo en <strong>Google Cloud</strong>. En esta parte, aprenderás a escalar el pipeline de manera eficiente y a controlar los costos.</p>
+<section id="instrucciones-3" class="level4">
+<h4 class="anchored" data-anchor-id="instrucciones-3"><strong>Instrucciones</strong>:</h4>
+<ol type="1">
+<li><strong>Revisar los costos del job</strong>:
+<ul>
+<li>En la consola de <strong>Google Cloud</strong>, navega a la sección de <strong>Facturación</strong>.</li>
+<li>Revisa el costo asociado al job de <strong>Dataflow</strong> para asegurarte de que no está superando el presupuesto asignado.</li>
+</ul></li>
+<li><strong>Escalado horizontal</strong>:
+<ul>
+<li>Si notas que el pipeline está tardando demasiado en procesar los mensajes, puedes escalar horizontalmente añadiendo más instancias de trabajo a <strong>Dataflow</strong>.</li>
+<li>Esto permitirá que el pipeline procese más mensajes simultáneamente y reduzca la latencia.</li>
+</ul></li>
+<li><strong>Limitar el uso del “Streaming Engine”</strong>:
+<ul>
+<li>Si no es necesario procesar datos en tiempo real con el máximo rendimiento, puedes optar por no habilitar el <strong>Streaming Engine</strong> para reducir los costos.</li>
+<li>Esta opción es más adecuada para flujos de datos con volúmenes bajos o moderados.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
