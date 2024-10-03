@@ -1,0 +1,6 @@
+https://www.datosabiertos.gob.pe/dataset/promedio-mensual-de-remuneraciones-brutas-soles-s-de-trabajadores-en-el-sector-privado-por-0
+
+PROMEDIO MENSUAL DE REMUNERACIONES BRUTAS (SOLES S/.) DE TRABAJADORES EN EL SECTOR PRIVADO POR SITUACIÓN EDUCATIVO, SEGÚN DISTRITOS AÑO 2021
+
+Según Decreto Supremo N°018-2007-TR; Planilla Electrónica, Modificado por el D.S. N°015-2010-TR; 
+Se trabaja en base al Ubigeo de la INEI ; Distritos a nivel nacional , situación educativa
